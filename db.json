@@ -1,0 +1,19 @@
+{ 
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Feed the dogs",
+      "description": "Feed them the brand of 'Premium Doggies' and put 1 cup each to their plates",
+      "status": "IP",
+      "due date": "Dec 12, 2025, Thu"
+    },
+
+    {
+      "id": 2,
+      "title": "Take Ashley to football class",
+      "description": "Go to 325 Left Blv. 53489, building name is 'Gollies Girls'",
+      "status": "TD",
+      "due date": "Dec 29, 2025, Thu"
+    }
+  ]
+}

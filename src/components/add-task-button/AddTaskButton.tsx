@@ -1,9 +1,16 @@
+import { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import './AddTaskButton.css';
 
 export function AddTaskButton() {
+  const [task, setTask] = useState(null);
+
+  useEffect(() => {
+    
+  }, [task]);
+
   return (
     <>
       <Stack direction="row" spacing={0.5}>

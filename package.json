@@ -1,8 +1,19 @@
 {
-  "name": "task-management-app",
-  "private": true,
+  "name": "json-mock-api",
   "version": "0.0.0",
+  "private": true,
+  "description": "JSON Mock API for Task Management App project",
+  "keywords": [
+    "json-server",
+    "fake-api",
+    "fake",
+    "mock-api",
+    "mock"
+  ],
+  "license": "ISC",
+  "author": "nergisRahimzade",
   "type": "module",
+  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
