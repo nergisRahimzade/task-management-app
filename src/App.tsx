@@ -4,12 +4,12 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
+
+import { TaskChangeButtons } from './components/task-change-buttons/TaskChangeButtons.tsx';
+import { AddTaskButton } from './components/add-task-button/AddTaskButton.tsx';
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#fde5e5',
+  backgroundColor: '#f0f0f0ff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -26,11 +26,7 @@ function App() {
         <Grid container spacing={2}>
           <Grid size={2}>
             <Item>
-              <DeleteIcon />
-            </Item>
-
-            <Item>
-              <EditIcon />
+              <TaskChangeButtons />
             </Item>
           </Grid>
 
@@ -42,7 +38,7 @@ function App() {
 
           <Grid size="auto">
             <Item>
-              <AddIcon /> Add Task
+              <AddTaskButton />
             </Item>
           </Grid>
         </Grid>
