@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -11,40 +11,57 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 
+import Button from '@mui/material/Button';
+
 import './AddTaskButton.css';
 
 export function AddTaskButton() {
+  const [showForm, setShowForm] = useState(false);
   const [status, setStatus] = useState('');
+  const [task, setTask] = useState({
+    title: '',
+    description: '',
+    status: '',
+    dueDate: ''
+  });
+  const BASE_URL = "http://localhost:3000";
 
   const handleChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);
   };
 
-  const [task, setTask] = useState(null);
+  const handleNewTask = (event: any) => {
+    //use "name" attributes to update state dynamically
+    setTask({ ...task, [event.target.name]: event.target.value });
+  };
 
-  const BASE_URL = "https://localhost:3000";
-
-  useEffect(async (event) => {
-    const newTask = event.target.value;
-
+  const handleSubmit = async () => {
     await fetch(`${BASE_URL}/tasks`, {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         id: crypto.randomUUID(),
-        title: newTask.title,
-        description: newTask.description,
-        status: newTask.status,
-        dueDate: newTask.dueDate
+        title: task.title,
+        description: task.description,
+        status: task.status,
+        dueDate: task.dueDate 
       })
     });
-  }, [task]);
 
-  const handleClick = () => {
-    const [newTask, setNewTask] = useState('');
+    setShowForm(false);
+    setTask({ title: '', description: '', status: '', dueDate: ''});
+  
+  };
 
-    return (
-      <>
+  return (
+    <>
+      <Stack direction="row" spacing={0.5}>
+        <IconButton aria-label="add" onClick={() => {setShowForm(true)}}>
+          <AddIcon className='add-task-button-icon' /> <span className='add-task-button-text'>Add Task</span>
+        </IconButton>
+      </Stack>
+
+      {showForm && (
         <Box
           component='form'
           sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
@@ -54,11 +71,17 @@ export function AddTaskButton() {
           <TextField
             id="outlined-basic"
             label='Title'
+            name='title'
+            value={task.title}
+            onChange={handleNewTask}
           />
 
           <TextField
             id="outlined-multiline-static"
             label='Description'
+            name='description'
+            value={task.description}
+            onChange={handleNewTask}
             multiline
             rows={5}
             defaultValue=""
@@ -82,19 +105,19 @@ export function AddTaskButton() {
           <TextField
             id="outlined-basic"
             label='Due Date'
+            name='dueDate'
+            value={task.dueDate}
+            onChange={handleNewTask}
           />
-        </Box>
-      </>
-    );
-  };
 
-  return (
-    <>
-      <Stack direction="row" spacing={0.5}>
-        <IconButton aria-label="add" onClick={handleClick}>
-          <AddIcon className='add-task-button-icon' /> <span className='add-task-button-text'>Add Task</span>
-        </IconButton>
-      </Stack>
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            Done
+          </Button>
+        </Box>
+      )}
     </>
   );
 }
