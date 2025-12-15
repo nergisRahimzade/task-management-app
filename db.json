@@ -15,18 +15,18 @@
       "dueDate": "Dec 29, 2025, Thu"
     },
     {
-      "id": "cb049bc9-7866-473b-a7c2-92b274ea13cc",
-      "title": "fdafa",
-      "description": "fafa",
-      "status": "",
-      "dueDate": ""
-    },
-    {
       "id": "9fedac5b-752c-4189-ac12-b8df4a023c51",
       "title": "go to school",
       "description": "wake up at 7",
+      "status": "D",
+      "dueDate": "Dec 13, 2025, Sa"
+    },
+    {
+      "id": "352ccae9-765a-4db5-809a-756adf467aa8",
+      "title": "Go to picnic",
+      "description": "Don't forget bring fruits",
       "status": "",
-      "dueDate": "12/13/25"
+      "dueDate": "Dec 28, 2025, We"
     }
   ]
 }

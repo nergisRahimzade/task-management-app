@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 
 import { TaskChangeButtons } from './components/task-change-buttons/TaskChangeButtons.tsx';
 import { AddTaskButton } from './components/add-task-button/AddTaskButton.tsx';
+import { TaskComponents } from './components/task-components/TaskComponents.tsx';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',
@@ -24,16 +25,17 @@ function App() {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
-          <Grid size={2}>
-            <Item>
-              <TaskChangeButtons />
-            </Item>
-          </Grid>
-
           <Grid size="grow">
             <Item>
               <TaskGrid />
             </Item>
+
+            <Grid size="grow">
+              <Item>
+                <TaskComponents />
+              </Item>
+            </Grid>
+
           </Grid>
 
           <Grid size="auto">
