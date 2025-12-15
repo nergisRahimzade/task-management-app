@@ -29,11 +29,13 @@ export function TaskChangeButtons() {
     fetchData();
   }, []);
 
+  /*
   const handleDelete = async (task) => {
     await fetch((`http://localhost:3000/tasks/${task.id}`), {
       method: 'DELETE'
     });
   };
+  */
 
   /*
   const handleEdit = async () => {
@@ -54,7 +56,7 @@ export function TaskChangeButtons() {
   return (
     <>
       <Stack direction="row" spacing={0.5}>
-        <IconButton aria-label="delete" onClick={() => {handleDelete(task)}}>
+        <IconButton aria-label="delete" onClick={() => {/*</Stack>handleDelete(task)*/}}>
           <DeleteIcon className='icon-buttons' />
         </IconButton>
 

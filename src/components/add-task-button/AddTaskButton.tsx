@@ -48,6 +48,11 @@ export function AddTaskButton() {
       })
     });
 
+     await fetch(`${BASE_URL}/tasks`, {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'},
+    });
+
     setShowForm(false);
     setTask({ title: '', description: '', status: '', dueDate: ''});
   
