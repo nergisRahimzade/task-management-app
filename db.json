@@ -4,7 +4,7 @@
       "id": "1",
       "title": "Feed the dogs",
       "description": "Feed them the brand of 'Premium Doggies' and put 1 cup each to their plates",
-      "status": "IP",
+      "status": "D",
       "dueDate": "Dec 12, 2025, Thu"
     },
     {
@@ -15,25 +15,18 @@
       "dueDate": "Dec 29, 2025, Thu"
     },
     {
-      "id": "9fedac5b-752c-4189-ac12-b8df4a023c51",
-      "title": "go to school",
-      "description": "wake up at 7",
+      "id": "837e9764-20c9-4ff8-a378-b5d0b0a422e2",
+      "title": "get groceries",
+      "description": "buy apples, lemon, celery and eggs",
+      "status": "IP",
+      "dueDate": "dec 12, 2025"
+    },
+    {
+      "id": "28ece069-63f0-404f-a6a0-3d92f80f27cf",
+      "title": "drink 1 L of water",
+      "description": "don't forget to drink water",
       "status": "D",
-      "dueDate": "Dec 13, 2025, Sa"
-    },
-    {
-      "id": "b05fc442-222b-4771-99c7-1effdbdf7f13",
-      "title": "vvcz",
-      "description": "fdaf",
-      "status": "",
-      "dueDate": "fafa"
-    },
-    {
-      "id": "9bfad305-0b65-4b78-8959-47420413e9bf",
-      "title": "fafa",
-      "description": "fadfdas",
-      "status": "",
-      "dueDate": "fsafsa"
+      "dueDate": "dec 29, 2025, fri"
     }
   ]
 }

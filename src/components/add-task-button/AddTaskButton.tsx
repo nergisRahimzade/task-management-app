@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -6,18 +6,12 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { type SelectChangeEvent } from '@mui/material/Select';
-
 import Button from '@mui/material/Button';
 
 import './AddTaskButton.css';
 
 export function AddTaskButton() {
   const [showForm, setShowForm] = useState(false);
-  const [status, setStatus] = useState('');
   const [task, setTask] = useState({
     title: '',
     description: '',
@@ -26,42 +20,37 @@ export function AddTaskButton() {
   });
   const BASE_URL = "http://localhost:3000";
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value as string);
-  };
+  const [flag, setFlag] = useState(false);
 
   const handleNewTask = (event: any) => {
-    //use "name" attributes to update state dynamically
     setTask({ ...task, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = async () => {
-    await fetch(`${BASE_URL}/tasks`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        id: crypto.randomUUID(),
-        title: task.title,
-        description: task.description,
-        status: task.status,
-        dueDate: task.dueDate 
-      })
-    });
+  useEffect(() => {
+    const handleSubmit = async () => {
+      await fetch(`${BASE_URL}/tasks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: crypto.randomUUID(),
+          title: task.title,
+          description: task.description,
+          status: task.status,
+          dueDate: task.dueDate
+        })
+      });
+    };
 
-     await fetch(`${BASE_URL}/tasks`, {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json'},
-    });
+    handleSubmit();
 
     setShowForm(false);
-    setTask({ title: '', description: '', status: '', dueDate: ''});
-  
-  };
+    setTask({ title: '', description: '', status: '', dueDate: '' });
+  }, [flag]);
 
   return (
     <>
       <Stack direction="row" spacing={0.5}>
-        <IconButton aria-label="add" onClick={() => {setShowForm(true)}}>
+        <IconButton aria-label="add" onClick={() => { setShowForm(true) }}>
           <AddIcon className='add-task-button-icon' /> <span className='add-task-button-text'>Add Task</span>
         </IconButton>
       </Stack>
@@ -89,23 +78,20 @@ export function AddTaskButton() {
             onChange={handleNewTask}
             multiline
             rows={5}
-            defaultValue=""
           />
 
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Status</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={status}
-              label="Status"
-              onChange={handleChange}
-            >
-              <MenuItem value={'TD'}>TD</MenuItem>
-              <MenuItem value={'IP'}>IP</MenuItem>
-              <MenuItem value={'D'}>D</MenuItem>
-            </Select>
-          </FormControl>
+          <select
+            id='status'
+            name='status'
+            value={task.status}
+            onChange={(event) => {
+              handleNewTask(event);
+            }}>
+            <option value=''>Select</option>
+            <option value='TD'>TD</option>
+            <option value='IP'>IP</option>
+            <option value='D'>D</option>
+          </select>
 
           <TextField
             id="outlined-basic"
@@ -117,7 +103,7 @@ export function AddTaskButton() {
 
           <Button
             variant="contained"
-            onClick={handleSubmit}
+            onClick={() => setFlag(!flag)}
           >
             Done
           </Button>
