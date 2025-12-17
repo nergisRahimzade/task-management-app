@@ -27,10 +27,15 @@ interface Task {
   dueDate: string;
 }
 
+interface AddTaskButtonProps {
+  taskData: Task[],
+  setTaskData: React.Dispatch<React.SetStateAction<Task[]>>,
+  refreshTasks: () => Promise<void>
+}
+
 //isonfetch
 
-export function TaskComponents() {
-  const [taskData, setTaskData] = useState<Task[]>([]);
+export function TaskComponents({ taskData, setTaskData, refreshTasks }: AddTaskButtonProps) {
   const [showEditForm, setShowEditForm] = useState(false);
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [task, setTask] = useState({
@@ -39,7 +44,6 @@ export function TaskComponents() {
     status: '',
     dueDate: ''
   });
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +59,18 @@ export function TaskComponents() {
     await fetch((`http://localhost:3000/tasks/${deletedTask.id}`), {
       method: 'DELETE'
     });
+
+    refreshTasks();
+  };
+
+  const handleEdit = async (updatedTask: Task) => {
+    setEditingTaskId(updatedTask.id);
+    setTask(updatedTask);
+    setShowEditForm(true);
+  };
+
+  const handleUpdatedTask = (event: any) => {
+    setTask({ ...task, [event?.target.name]: event.target.value });
   };
 
   const handleStatusChange = async (taskItem: Task, newStatus: string) => {
@@ -68,12 +84,7 @@ export function TaskComponents() {
       })
     });
 
-  };
-
-  const handleEdit = async (updatedTask: Task) => {
-    setEditingTaskId(updatedTask.id);
-    setTask(updatedTask);
-    setShowEditForm(true);
+    refreshTasks();
   };
 
   const handleSubmit = async (editingTaskId: any) => {
@@ -86,47 +97,39 @@ export function TaskComponents() {
         description: task.description,
         status: task.status,
         dueDate: task.dueDate
-      }
-      )
+      })
     });
 
     setEditingTaskId(null);
     setShowEditForm(false);
+    refreshTasks();
   };
 
-  const handleUpdatedTask = (event: any) => {
-    setTask({ ...task, [event?.target.name]: event.target.value });
-  };
 
   return (
     <>
       {taskData.map((taskItem) => (
-        <Grid container spacing={2} key={taskItem.id}>
-          <Grid size={1}>
-            <Stack>
+        <>
+          <table>
+            <td>
               <IconButton aria-label="delete" onClick={() => { handleDelete(taskItem) }}>
                 <DeleteIcon className='icon-buttons' />
               </IconButton>
 
-              <IconButton aria-label="edit" onClick={() => {
-                setShowEditForm(true);
-                handleEdit(taskItem);
-              }}>
+              <IconButton aria-label="edit" onClick={() => { handleEdit(taskItem) }}>
                 <EditIcon className='icon-buttons' />
               </IconButton>
-            </Stack>
+            </td>
 
-          </Grid>
-          <Grid size={1.5}>
-            <Item>{taskItem.title}</Item>
-          </Grid>
+            <td>
+              {taskItem.title}
+            </td>
 
-          <Grid size={4}>
-            <Item>{taskItem.description}</Item>
-          </Grid>
+            <td>
+              {taskItem.description}
+            </td>
 
-          <Grid size={2}>
-            <Item>
+            <td>
               <select
                 id='status'
                 name='status'
@@ -138,12 +141,13 @@ export function TaskComponents() {
                 <option value='IP'>IP</option>
                 <option value='D'>D</option>
               </select>
-            </Item>
-          </Grid>
+            </td>
 
-          <Grid size={2}>
-            <Item>{taskItem.dueDate}</Item>
-          </Grid>
+            <td>
+              {taskItem.dueDate}
+            </td>
+
+          </table>
 
           {(showEditForm && editingTaskId === taskItem.id) && (
             <>
@@ -199,8 +203,7 @@ export function TaskComponents() {
               </Box>
             </>
           )}
-        </Grid>
-
+        </>
       ))}
 
     </>

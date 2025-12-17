@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-
+import { useState, useEffect } from 'react';
 import { AddTaskButton } from './components/add-task-button/AddTaskButton.tsx';
 import { TaskComponents } from './components/task-components/TaskComponents.tsx';
 
@@ -19,31 +19,63 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
+interface Task {
+  id: string,
+  title: string,
+  description: string,
+  status: string,
+  dueDate: string
+}
+
 function App() {
+  const [taskData, setTaskData] = useState<Task[]>([]);
+
+  const refreshTasks = async () => {
+    const response = await fetch('http://localhost:3000/tasks');
+    const data = await response.json();
+    setTaskData(data);
+  };
+
+  useEffect(() => {
+    refreshTasks();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('http://localhost:3000/tasks');
+      const data = await response.json();
+      setTaskData(data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          <Grid size="grow">
-            <Item>
-              <TaskGrid />
-            </Item>
+      <table>
+        <tr>
+          <th>
+            Title
+          </th>
 
-            <Grid size="grow">
-              <Item>
-                <TaskComponents />
-              </Item>
-            </Grid>
+          <th>
+            Description
+          </th>
 
-          </Grid>
+          <th>
+            Status
+          </th>
 
-          <Grid size="auto">
-            <Item>
-              <AddTaskButton />
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
+          <th>
+            Due Date
+          </th>
+        </tr>
+
+        <tr>
+          <TaskComponents refreshTasks={refreshTasks} taskData={taskData} setTaskData={setTaskData} />
+        </tr>
+      </table>
+      
     </>
   )
 }

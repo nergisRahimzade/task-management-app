@@ -5,3 +5,35 @@
 .add-task-button-icon {
   width: 26px;
 }
+
+.add-task-dialog {
+  border: none;
+  border-radius: 1rem;
+}
+
+.add-task-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 400px;
+}
+
+.add-task-dialog ::backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.add-task-dialog-component {
+  margin-bottom: 10px;
+}
+
+.add-task-dialog-component-select {
+  border-color: lightgrey;
+  border-style: solid;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.add-task-dialog-done-button {
+  border-radius: 10px;
+  background-color: green;
+}
