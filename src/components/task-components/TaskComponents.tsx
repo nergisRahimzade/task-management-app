@@ -1,22 +1,11 @@
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { useState, useEffect } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
-import { Box, Button, Stack, TextField } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: (theme.vars ?? theme).palette.text.secondary,
-  ...theme.applyStyles('dark', {
-    backgroundColor: '#1A2027',
-  }),
-}));
+import { Button, TextField } from '@mui/material';
+import './TaskComponents.css';
+
+import deleteIcon from '../../assets/icons/delete-icon.png';
+import editIcon from '../../assets/icons/edit-icon.png';
+
 
 // Define the type for your task
 interface Task {
@@ -27,7 +16,7 @@ interface Task {
   dueDate: string;
 }
 
-interface AddTaskButtonProps {
+interface TaskComponentsProps {
   taskData: Task[],
   setTaskData: React.Dispatch<React.SetStateAction<Task[]>>,
   refreshTasks: () => Promise<void>
@@ -35,7 +24,8 @@ interface AddTaskButtonProps {
 
 //isonfetch
 
-export function TaskComponents({ taskData, setTaskData, refreshTasks }: AddTaskButtonProps) {
+export function TaskComponents({ taskData, setTaskData, refreshTasks }: TaskComponentsProps) {
+  const dialogElement = useRef<HTMLDialogElement>(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [task, setTask] = useState({
@@ -55,7 +45,7 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks }: AddTaskB
     fetchData();
   }, []);
 
-  const handleDelete = async (deletedTask: Task) => {
+  const handleDelete = async (deletedTask: Task): Promise<void> => {
     await fetch((`http://localhost:3000/tasks/${deletedTask.id}`), {
       method: 'DELETE'
     });
@@ -63,10 +53,11 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks }: AddTaskB
     refreshTasks();
   };
 
-  const handleEdit = async (updatedTask: Task) => {
+  const handleEdit = async (updatedTask: Task): Promise<void> => {
     setEditingTaskId(updatedTask.id);
-    setTask(updatedTask);
+    await setTask(updatedTask);
     setShowEditForm(true);
+    handleShowModal();
   };
 
   const handleUpdatedTask = (event: any) => {
@@ -100,36 +91,39 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks }: AddTaskB
       })
     });
 
+    handleCloseModal();
     setEditingTaskId(null);
     setShowEditForm(false);
     refreshTasks();
   };
 
+  const handleShowModal = () => {
+    if (dialogElement.current)
+      dialogElement.current.showModal();
+  }
+
+  const handleCloseModal = () => {
+    if (dialogElement.current)
+      dialogElement.current.close();
+  }
+
 
   return (
     <>
       {taskData.map((taskItem) => (
-        <>
-          <table>
-            <td>
-              <IconButton aria-label="delete" onClick={() => { handleDelete(taskItem) }}>
-                <DeleteIcon className='icon-buttons' />
-              </IconButton>
+        <div className='tasks-container'>
+          <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
 
-              <IconButton aria-label="edit" onClick={() => { handleEdit(taskItem) }}>
-                <EditIcon className='icon-buttons' />
-              </IconButton>
-            </td>
-
-            <td>
+          <div className='taskItems-container'>
+            <div className='title'>
               {taskItem.title}
-            </td>
+            </div>
 
-            <td>
+            <div className='description'>
               {taskItem.description}
-            </td>
+            </div>
 
-            <td>
+            <div className='status'>
               <select
                 id='status'
                 name='status'
@@ -141,23 +135,18 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks }: AddTaskB
                 <option value='IP'>IP</option>
                 <option value='D'>D</option>
               </select>
-            </td>
+            </div>
 
-            <td>
+            <div className='due-date'>
               {taskItem.dueDate}
-            </td>
+            </div>
+          </div>
 
-          </table>
 
-          {(showEditForm && editingTaskId === taskItem.id) && (
+
+          {(
             <>
-              <Box
-                component='form'
-                sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
-                noValidate
-                autoComplete='off'
-              >
-
+              <dialog ref={dialogElement}>
                 <TextField
                   id="outlined-basic"
                   label="Title"
@@ -200,12 +189,41 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks }: AddTaskB
                 >
                   Cancel
                 </Button>
-              </Box>
+
+              </dialog>
             </>
           )}
-        </>
+        </div>
       ))}
 
+    </>
+  );
+}
+
+interface TaskComponentsProps {
+  taskData: Task[],
+  setTaskData: React.Dispatch<React.SetStateAction<Task[]>>,
+  refreshTasks: () => Promise<void>
+}
+
+interface TaskChangeButtonsProps {
+  handleDelete: (updatedTask: Task) => void | Promise<void>,
+  handleEdit: (updatedTask: Task) => void | Promise<void>,
+  taskItem: Task
+}
+
+export function TaskChangeButtons({ handleDelete, handleEdit, taskItem }: TaskChangeButtonsProps) {
+  return (
+    <>
+      <div className='task-change-buttons-container'>
+        <button className='task-change-buttons-delete' onClick={() => { handleDelete(taskItem) }}>
+          <img src={deleteIcon} className='task-change-buttons-icons' />
+        </button>
+
+        <button className='task-change-buttons-edit' onClick={() => { handleEdit(taskItem) }}>
+          <img src={editIcon} className='task-change-buttons-icons' />
+        </button>
+      </div>
     </>
   );
 }

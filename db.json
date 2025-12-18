@@ -1,39 +1,32 @@
 {
   "tasks": [
     {
-      "id": "1",
-      "title": "Feed the dogs",
-      "description": "Feed them the brand of 'Premium Doggies' and put 1 cup each to their plates",
+      "id": "9de75cc1-26d1-4ee5-ad36-417a959b51eb",
+      "title": "testtttt",
+      "description": "testtt",
+      "status": "TD",
+      "dueDate": "test"
+    },
+    {
+      "id": "f9664859-d1a3-4fea-afb7-fd0012c51249",
+      "title": "test2",
+      "description": "test2",
       "status": "IP",
-      "dueDate": "Dec 12, 2025, Thu"
+      "dueDate": "test2"
     },
     {
-      "id": "2",
-      "title": "Take Ashley to football class",
-      "description": "Go to 325 Left Blv. 1234, building name is 'Gollies Girls'",
-      "status": "D",
-      "dueDate": "Dec 29, 2025, Thu"
+      "id": "5b06d1df-6368-4115-9014-7319b7450bd9",
+      "title": "test3",
+      "description": "test3",
+      "status": "TD",
+      "dueDate": "test3"
     },
     {
-      "id": "28ece069-63f0-404f-a6a0-3d92f80f27cf",
-      "title": "drink 1 L of water",
-      "description": "don't forget to drink water",
-      "status": "D",
-      "dueDate": "dec 29, 2025, fri"
-    },
-    {
-      "id": "047344fa-4207-4511-997e-cc3eef2174d0",
+      "id": "05d2fa8e-8729-490a-aa5f-8b362da3514b",
       "title": "test4",
       "description": "test4",
       "status": "TD",
       "dueDate": "test4"
-    },
-    {
-      "id": "b2f26739-5d65-409d-9aec-b226f6862c0b",
-      "title": "test",
-      "description": "test",
-      "status": "TD",
-      "dueDate": "test"
     }
   ]
 }

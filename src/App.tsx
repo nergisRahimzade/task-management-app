@@ -1,9 +1,6 @@
 import './App.css'
-import { TaskGrid } from './components/TaskGrid.tsx';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
 import { useState, useEffect } from 'react';
 import { AddTaskButton } from './components/add-task-button/AddTaskButton.tsx';
 import { TaskComponents } from './components/task-components/TaskComponents.tsx';
@@ -40,43 +37,37 @@ function App() {
     refreshTasks();
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('http://localhost:3000/tasks');
-      const data = await response.json();
-      setTaskData(data);
-    };
-
-    fetchData();
-  }, []);
 
   return (
-    <>
-      <table>
-        <tr>
-          <th>
-            Title
-          </th>
+    <div className='container'>
+      <Item className='add-task-button'>
+        <AddTaskButton refreshTasks={refreshTasks} />
+      </Item>
 
-          <th>
-            Description
-          </th>
-
-          <th>
-            Status
-          </th>
-
-          <th>
-            Due Date
-          </th>
-        </tr>
-
-        <tr>
-          <TaskComponents refreshTasks={refreshTasks} taskData={taskData} setTaskData={setTaskData} />
-        </tr>
-      </table>
       
-    </>
+        <div className='header-container'>
+          <div className='header-title'>
+            Title
+          </div>
+
+          <div className='header-description'>
+            Description
+          </div>
+
+          <div className='header-status'>
+            Status
+          </div>
+
+          <div className='header-due-date'>
+            Due Date
+          </div>
+        </div>
+
+        <TaskComponents refreshTasks={refreshTasks} taskData={taskData} setTaskData={setTaskData} />
+
+      
+
+    </div>
   )
 }
 

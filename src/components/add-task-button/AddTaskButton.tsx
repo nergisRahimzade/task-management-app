@@ -3,9 +3,9 @@ import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
+import '../../assets/icons/add-icon.png';
 import Button from '@mui/material/Button';
 
 import './AddTaskButton.css';
@@ -60,15 +60,13 @@ export function AddTaskButton({ refreshTasks }: AddTaskButtonProps) {
 
     setTask({ title: '', description: '', status: '', dueDate: '' });
     refreshTasks();
-    //handleCloseModal();
-    if(dialogElement.current)
-      dialogElement.current.close();
+    handleCloseModal();
   }
 
   return (
     <>
       <Stack direction="row" spacing={0.5}>
-        <IconButton aria-label="add" onClick={() => {
+        <IconButton className='add-task-button' aria-label="add" onClick={() => {
           handleShowModal();
         }}>
           <AddIcon className='add-task-button-icon' /> <span className='add-task-button-text'>Add Task</span>

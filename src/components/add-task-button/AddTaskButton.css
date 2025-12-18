@@ -1,3 +1,7 @@
+.add-task-button {
+  background-color: purple;
+}
+
 .add-task-button-text {
   font-size: 15px;
 }
@@ -19,7 +23,7 @@
 }
 
 .add-task-dialog ::backdrop {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .add-task-dialog-component {

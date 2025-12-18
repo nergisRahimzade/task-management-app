@@ -1,6 +1,62 @@
-table,
-th,
-td {
+body{
+  font-family: Arial;
+}
+
+.container {
+  padding: 20px;  
+}
+
+.add-task-button {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  max-width: calc(100% - 20px);
+  height: auto;
+  margin: 10px;
   border: 1px solid black;
   border-collapse: collapse;
 }
+
+.header-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 1fr;
+  gap: 30px;
+  font-size: 20px;
+  margin-left: 100px;
+  align-items: stretch;
+  text-align: center;
+  padding: 10px;
+}
+
+.header-title {
+  background-color: rgb(77, 168, 225);
+  color: rgb(60, 60, 60);
+  padding: 20px 30px;
+  border-radius: 20px;
+}
+
+.header-description {
+  background-color: rgb(238, 236, 167);
+  color: rgb(60, 60, 60);
+  padding: 20px 30px;
+  border-radius: 20px;
+}
+
+.header-status {
+  background-color: rgb(173, 241, 173);
+  color: rgb(60, 60, 60);
+  padding: 20px 30px;
+  border-radius: 20px;
+}
+
+.header-due-date {
+  background-color: rgb(233, 176, 246);
+  color: rgb(60, 60, 60);
+  padding: 20px 30px;
+  border-radius: 20px;
+}
+
+
