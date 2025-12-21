@@ -4,6 +4,8 @@ import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
 import { AddTaskButton } from './components/add-task-button/AddTaskButton.tsx';
 import { TaskComponents } from './components/task-components/TaskComponents.tsx';
+import { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',
@@ -21,7 +23,7 @@ interface Task {
   title: string,
   description: string,
   status: string,
-  dueDate: string
+  dueDate: Dayjs | null
 }
 
 function App() {
@@ -30,7 +32,14 @@ function App() {
   const refreshTasks = async () => {
     const response = await fetch('http://localhost:3000/tasks');
     const data = await response.json();
-    setTaskData(data);
+
+    const parsedData = data.map((task: Task) => (
+      {
+        ...task,
+        dueDate: task.dueDate ? dayjs(task.dueDate) : null
+      }));
+
+    setTaskData(parsedData);
   };
 
   useEffect(() => {
@@ -44,28 +53,26 @@ function App() {
         <AddTaskButton refreshTasks={refreshTasks} />
       </Item>
 
-      
-        <div className='header-container'>
-          <div className='header-title'>
-            Title
-          </div>
 
-          <div className='header-description'>
-            Description
-          </div>
-
-          <div className='header-status'>
-            Status
-          </div>
-
-          <div className='header-due-date'>
-            Due Date
-          </div>
+      <div className='header-container'>
+        <div className='header-title'>
+          Title
         </div>
 
-        <TaskComponents refreshTasks={refreshTasks} taskData={taskData} setTaskData={setTaskData} />
+        <div className='header-description'>
+          Description
+        </div>
 
-      
+        <div className='header-status'>
+          Status
+        </div>
+
+        <div className='header-due-date'>
+          Due Date
+        </div>
+      </div>
+
+      <TaskComponents refreshTasks={refreshTasks} taskData={taskData} setTaskData={setTaskData} />
 
     </div>
   )

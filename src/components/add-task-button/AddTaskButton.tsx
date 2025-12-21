@@ -1,67 +1,27 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
-import TextField from '@mui/material/TextField';
-
 import '../../assets/icons/add-icon.png';
-import Button from '@mui/material/Button';
 
 import './AddTaskButton.css';
+import { DialogComponent } from '../dialog-component/DialogComponent';
 
 interface AddTaskButtonProps {
   refreshTasks: () => Promise<void>
 }
 
 export function AddTaskButton({ refreshTasks }: AddTaskButtonProps) {
-  const dialogElement = useRef<HTMLDialogElement>(null);
-  const [task, setTask] = useState({
-    title: '',
-    description: '',
-    status: '',
-    dueDate: ''
-  });
-  const BASE_URL = "http://localhost:3000";
+  const [open, setOpen] = useState(false);
 
-  const handleNewTask = (event: any) => {
-    setTask({ ...task, [event.target.name]: event.target.value });
-  };
-
-  const handleShowModal = () => {
-    if (dialogElement.current)
-      dialogElement.current.showModal();
+  const handleShowModal = async () => {
+    setOpen(true);
   };
 
   const handleCloseModal = () => {
-    if (dialogElement.current)
-      dialogElement.current.close();
+    setOpen(false);
   };
-
-  const handleCancel = () => {
-    setTask({ title: '', description: '', status: '', dueDate: '' });
-    handleCloseModal();
-    refreshTasks();
-  }
-
-
-  const handleSubmit = async () => {
-    await fetch(`${BASE_URL}/tasks`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: crypto.randomUUID(),
-        title: task.title,
-        description: task.description,
-        status: task.status,
-        dueDate: task.dueDate
-      })
-    });
-
-    setTask({ title: '', description: '', status: '', dueDate: '' });
-    refreshTasks();
-    handleCloseModal();
-  }
 
   return (
     <>
@@ -73,68 +33,14 @@ export function AddTaskButton({ refreshTasks }: AddTaskButtonProps) {
         </IconButton>
       </Stack>
 
-      <dialog ref={dialogElement} className='add-task-dialog' id='add-task-dialog'>
-        <TextField
-          className='add-task-dialog-component'
-          id="outlined-basic"
-          label='Title'
-          name='title'
-          value={task.title}
-          onChange={handleNewTask}
-        />
+      <DialogComponent
+        refreshTasks={refreshTasks} 
+        id='Add Task'
+        open={open}
+        onClose={handleCloseModal}
+        taskToEdit={null}
+      />
 
-        <TextField
-          className='add-task-dialog-component'
-          id="outlined-multiline-static"
-          label='Description'
-          name='description'
-          value={task.description}
-          onChange={handleNewTask}
-          multiline
-          rows={5}
-        />
-
-        <select
-          className='add-task-dialog-component-select'
-          id='status'
-          name='status'
-          value={task.status}
-          onChange={(event) => {
-            handleNewTask(event);
-          }}>
-          <option value=''>Select</option>
-          <option value='TD'>TD</option>
-          <option value='IP'>IP</option>
-          <option value='D'>D</option>
-        </select>
-
-        <TextField
-          className='add-task-dialog-component'
-          id="outlined-basic"
-          label='Due Date'
-          name='dueDate'
-          value={task.dueDate}
-          onChange={handleNewTask}
-        />
-
-        <Button
-          className='add-task-dialog-component-done-button'
-          variant="contained"
-          onClick={async () => {
-            await handleSubmit();
-          }}
-        >
-          Done
-        </Button>
-
-        <Button
-          className='add-task-dialog-component-cancel-button'
-          variant='contained'
-          onClick={() => { handleCancel() }}
-        >
-          Cancel
-        </Button>
-      </dialog>
 
     </>
   );
