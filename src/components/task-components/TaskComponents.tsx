@@ -31,9 +31,21 @@ interface TaskComponentsProps {
   refreshTasks: () => Promise<void>
 }
 
+type Elements = {
+  title: string;
+  status: string;
+  dueDate: Dayjs | null;
+}
+
 export function TaskComponents({ taskData, setTaskData, refreshTasks }: TaskComponentsProps) {
   const [open, setOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [values, setValues] = useState<Elements>({
+    title: '',
+    status: '',
+    dueDate: null
+  });
+  const [errorValues, setErrorValues] = useState<Partial<Elements>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,9 +103,10 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks }: TaskComp
     <>
       {taskData.map((taskItem) => (
         <div key={taskItem.id} className='tasks-container'>
-          <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
 
           <div className='taskItems-container'>
+            <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
+
             <div className='title'>
               {taskItem.title}
             </div>
@@ -131,12 +144,12 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks }: TaskComp
               <LocalizationProvider
                 dateAdapter={AdapterDayjs}
               >
-                  <DatePicker 
-                    name='dueDate' 
-                    value={taskItem.dueDate} 
-                    label='Due Date' 
-                    readOnly
-                  />
+                <DatePicker
+                  name='dueDate'
+                  value={taskItem.dueDate}
+                  label='Due Date'
+                  readOnly
+                />
               </LocalizationProvider>
             </div>
           </div>
@@ -177,7 +190,7 @@ interface TaskChangeButtonsProps {
 export function TaskChangeButtons({ handleDelete, handleEdit, taskItem }: TaskChangeButtonsProps) {
   return (
     <>
-      <div className='task-change-buttons-container'>
+      
         <Stack direction="row" spacing={1}>
           <IconButton
             aria-label="delete"
@@ -195,7 +208,7 @@ export function TaskChangeButtons({ handleDelete, handleEdit, taskItem }: TaskCh
             <EditIcon />
           </IconButton>
         </Stack>
-      </div>
+      
     </>
   );
 }
