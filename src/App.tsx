@@ -6,15 +6,7 @@ import { AddTaskButton } from './components/add-task-button/AddTaskButton.tsx';
 import { TaskComponents } from './components/task-components/TaskComponents.tsx';
 import { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Chip,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',
@@ -37,6 +29,12 @@ interface Task {
 
 function App() {
   const [taskData, setTaskData] = useState<Task[]>([]);
+  const [chosenStatus, setChosenStatus] = useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setChosenStatus(event.target.value);
+    refreshTasks();
+  };
 
   const refreshTasks = async () => {
     const response = await fetch('http://localhost:3000/tasks');
@@ -55,74 +53,61 @@ function App() {
     refreshTasks();
   }, []);
 
-  const tasks = [
-    {
-      id: 1,
-      title: "Design UI",
-      description: "Create wireframes",
-      status: "Todo",
-      dueDate: "2025-01-10",
-    },
-    {
-      id: 2,
-      title: "Build API",
-      description: "Set up backend",
-      status: "In Progress",
-      dueDate: "2025-01-15",
-    },
-    {
-      id: 3,
-      title: "Testing",
-      description: "Write tests",
-      status: "Done",
-      dueDate: "2025-01-05",
-    },
-  ];
-
 
   return (
     <div className='container'>
-      <Item className='add-task-button'>
-        <AddTaskButton refreshTasks={refreshTasks} />
-      </Item>
+      <div className='button-filter-container'>
+        <Item className='add-task-button'>
+          <AddTaskButton refreshTasks={refreshTasks} />
+        </Item>
 
-      <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Due Date</TableCell>
-          </TableRow>
-        </TableHead>
+        <Item className='filter-task-component'>
+          <FormControl sx={{ mindWidth: 120 }}>
+            <InputLabel id='demo-simple-select-label'>
+              Filter By
+            </InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='demo-simple-select'
+              value={chosenStatus}
+              label='Filter By'
+              onChange={handleChange}
+              sx={{ minWidth: 120 }}
+            >
+              <MenuItem value=''>None</MenuItem>
+              <MenuItem value='TD'>To Do</MenuItem>
+              <MenuItem value='IP'>In Progress</MenuItem>
+              <MenuItem value='D'>Done</MenuItem>
+            </Select>
+          </FormControl>
+        </Item>
+      </div>
 
-        <TableBody>
-          {tasks.map((task) => (
-            <TableRow key={task.id}>
-              <TableCell>{task.title}</TableCell>
-              <TableCell>{task.description}</TableCell>
-              <TableCell>
-                <Chip
-                  label={task.status}
-                  color={
-                    task.status === "Done"
-                      ? "success"
-                      : task.status === "In Progress"
-                      ? "warning"
-                      : "default"
-                  }
-                  size="small"
-                />
-              </TableCell>
-              <TableCell>{task.dueDate}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+      <div className='header-container'>
+        <div />
+        <div className='header-title'>
+          Title
+        </div>
 
-      <TaskComponents refreshTasks={refreshTasks} taskData={taskData} setTaskData={setTaskData} />
+        <div className='header-description'>
+          Description
+        </div>
+
+        <div className='header-status'>
+          Status
+        </div>
+
+        <div className='header-due-date'>
+          Due Date
+        </div>
+      </div>
+
+      <TaskComponents 
+        refreshTasks={refreshTasks} 
+        taskData={taskData} 
+        setTaskData={setTaskData} 
+        chosenStatus={chosenStatus}
+      />
 
     </div>
   )

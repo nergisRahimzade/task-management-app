@@ -26,7 +26,7 @@ export function AddTaskButton({ refreshTasks }: AddTaskButtonProps) {
   return (
     <>
       <Stack direction="row" spacing={0.5}>
-        <IconButton className='add-task-button' aria-label="add" onClick={() => {
+        <IconButton sx={{ height: 56 }} className='add-task-button' aria-label="add" onClick={() => {
           handleShowModal();
         }}>
           <AddIcon className='add-task-button-icon' /> <span className='add-task-button-text'>Add Task</span>
