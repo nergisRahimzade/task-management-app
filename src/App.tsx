@@ -83,8 +83,7 @@ function App() {
         </Item>
       </div>
 
-      <div className='header-container'>
-        <div />
+      <div className='header-container'> 
         <div className='header-title'>
           Title
         </div>
@@ -99,6 +98,10 @@ function App() {
 
         <div className='header-due-date'>
           Due Date
+        </div>
+
+        <div className='header-due-date'>
+          Actions
         </div>
       </div>
 

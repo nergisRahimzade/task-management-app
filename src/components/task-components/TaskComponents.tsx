@@ -94,9 +94,7 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks, chosenStat
 
           <div className='taskItems-container'>
             {(chosenStatus !== '') && (taskItem.status === chosenStatus) && (
-              <>
-                <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
-
+              <div>
                 <div className='title'>
                   {taskItem.title}
                 </div>
@@ -142,13 +140,13 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks, chosenStat
                     />
                   </LocalizationProvider>
                 </div>
-              </>
+
+                  <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
+              </div>
             )}
 
             {(chosenStatus === '') && (
               <>
-                <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
-
                 <div className='title'>
                   {taskItem.title}
                 </div>
@@ -194,6 +192,8 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks, chosenStat
                     />
                   </LocalizationProvider>
                 </div>
+
+                <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
               </>
             )}
 
@@ -236,7 +236,7 @@ export function TaskChangeButtons({ handleDelete, handleEdit, taskItem }: TaskCh
   return (
     <>
 
-      <Stack direction="row" spacing={1}>
+      <Stack direction="row" spacing={1} className='task-change-buttons-container'>
         <IconButton
           aria-label="delete"
           className='task-change-buttons-delete'

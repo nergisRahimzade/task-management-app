@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
 
 import { Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './DialogComponent.css';
 
 interface Task {
@@ -64,6 +64,13 @@ export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }:
     });
   };
   */
+
+  const isFormValid = useMemo<boolean>((): boolean => {
+    return task.title.length > 0 
+      && task.description.length > 0 
+      && task.status.length > 0
+      && task.dueDate !== null;
+  }, [task]);
 
   const handleSubmit = async () => {
     let requestType = '';
@@ -175,6 +182,7 @@ export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }:
             <Button
               variant='contained'
               onClick={ handleSubmit }
+              disabled={!isFormValid}
             >
               Done
             </Button>
