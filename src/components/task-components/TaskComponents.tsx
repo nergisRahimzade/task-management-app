@@ -1,4 +1,4 @@
-import { useState, useEffect, type SetStateAction, type Dispatch } from 'react';
+import { useState } from 'react';
 
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import './TaskComponents.css';
@@ -11,18 +11,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
 import { DialogComponent } from '../dialog-component/DialogComponent';
 
-// Define the type for your task
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: string;
-  dueDate: Dayjs | null;
-}
+import {deleteTask} from '../../services/deleteTask.ts';
+import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
+import type { Task } from '../../../public/typeTask.ts';
 
 interface TaskComponentsProps {
   taskData: Task[],
@@ -31,31 +24,13 @@ interface TaskComponentsProps {
   chosenStatus: string
 }
 
-export function TaskComponents({ taskData, setTaskData, refreshTasks, chosenStatus }: TaskComponentsProps) {
+export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskComponentsProps) {
+  //chosenStatus is for filtering task 
   const [open, setOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('http://localhost:3000/tasks');
-      const data = await response.json();
-
-      const parsedData = data.map((task: Task) => ({
-        ...task,
-        dueDate: task.dueDate ? dayjs(task.dueDate) : null
-      }));
-
-      setTaskData(parsedData);
-    };
-
-    fetchData();
-  }, []);
-
   const handleDelete = async (deletedTask: Task): Promise<void> => {
-    await fetch((`http://localhost:3000/tasks/${deletedTask.id}`), {
-      method: 'DELETE'
-    });
-
+    await deleteTask(deletedTask);
     refreshTasks();
   };
 
@@ -65,16 +40,7 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks, chosenStat
   };
 
   const handleStatusChange = async (taskItem: Task, newStatus: string) => {
-    //update backend
-    await fetch(`http://localhost:3000/tasks/${taskItem.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...taskItem,
-        status: newStatus
-      })
-    });
-
+    await updateTaskStatus(taskItem, newStatus);
     refreshTasks();
   };
 
@@ -86,15 +52,16 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks, chosenStat
     setOpen(false);
     setSelectedTask(null);
   };
+  
 
   return (
     <>
       {taskData.map((taskItem) => (
         <div key={taskItem.id} className='tasks-container'>
 
-          <div className='taskItems-container'>
+          <div >
             {(chosenStatus !== '') && (taskItem.status === chosenStatus) && (
-              <div>
+              <div className='taskItems-container'>
                 <div className='title'>
                   {taskItem.title}
                 </div>
@@ -146,7 +113,7 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks, chosenStat
             )}
 
             {(chosenStatus === '') && (
-              <>
+              <div className='taskItems-container'>
                 <div className='title'>
                   {taskItem.title}
                 </div>
@@ -194,7 +161,7 @@ export function TaskComponents({ taskData, setTaskData, refreshTasks, chosenStat
                 </div>
 
                 <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
-              </>
+              </div>
             )}
 
           </div>

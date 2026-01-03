@@ -8,13 +8,8 @@ import { Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, M
 import { useEffect, useMemo, useState } from 'react';
 import './DialogComponent.css';
 
-interface Task {
-  id: string,
-  title: string,
-  description: string,
-  status: string,
-  dueDate: Dayjs | null
-}
+import type { Task } from '../../../public/typeTask.ts';
+import { apiActionForDialog } from '../../services/apiActionForDialog.ts';
 
 interface DialogComponentProps {
   refreshTasks: () => Promise<void>,
@@ -73,32 +68,9 @@ export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }:
   }, [task]);
 
   const handleSubmit = async () => {
-    let requestType = '';
-    let fetchUrl = 'http://localhost:3000/tasks';
-    if (task.id === '') {
-      requestType = 'POST';
-    }
-
-    else {
-      requestType = 'PUT';
-      fetchUrl = fetchUrl + `/${task.id}`;
-    }
-
-    await fetch(fetchUrl, {
-      method: requestType,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: task.id === '' ? crypto.randomUUID() : task.id,
-        title: task.title,
-        description: task.description,
-        status: task.status,
-        dueDate: task.dueDate
-      })
-    });
-
+    await apiActionForDialog(task);
     handleCloseModal();
     refreshTasks();
-
   };
 
   return (

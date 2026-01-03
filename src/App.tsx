@@ -4,9 +4,10 @@ import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
 import { AddTaskButton } from './components/add-task-button/AddTaskButton.tsx';
 import { TaskComponents } from './components/task-components/TaskComponents.tsx';
-import { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
 import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
+
+import type { Task } from '../public/typeTask.ts';
+import { fethcedParsedTasks } from './services/fetchTasks.ts';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',
@@ -19,14 +20,6 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-interface Task {
-  id: string,
-  title: string,
-  description: string,
-  status: string,
-  dueDate: Dayjs | null
-}
-
 function App() {
   const [taskData, setTaskData] = useState<Task[]>([]);
   const [chosenStatus, setChosenStatus] = useState('');
@@ -37,15 +30,7 @@ function App() {
   };
 
   const refreshTasks = async () => {
-    const response = await fetch('http://localhost:3000/tasks');
-    const data = await response.json();
-
-    const parsedData = data.map((task: Task) => (
-      {
-        ...task,
-        dueDate: task.dueDate ? dayjs(task.dueDate) : null
-      }));
-
+    const parsedData = await fethcedParsedTasks();
     setTaskData(parsedData);
   };
 
