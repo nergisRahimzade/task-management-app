@@ -9,15 +9,8 @@ import { useEffect, useMemo, useState } from 'react';
 import './DialogComponent.css';
 
 import type { Task } from '../../../public/typeTask.ts';
+import type { DialogComponentProps } from '../../../public/props/DialogComponentProps.ts';
 import { apiActionForDialog } from '../../services/apiActionForDialog.ts';
-
-interface DialogComponentProps {
-  refreshTasks: () => Promise<void>,
-  id: string,
-  open: boolean,     
-  onClose: () => void,
-  taskToEdit?: Task | null
-}
 
 export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }: DialogComponentProps) {
   let addTaskOn = id === 'Add Task' ? true : false;
@@ -35,8 +28,8 @@ export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }:
   }, [taskToEdit]);
 
   const handleCloseModal = () => {
-    setTask({ id: '', title: '', description: '', status: '', dueDate: null });
     onClose();
+    setTask({ id: '', title: '', description: '', status: '', dueDate: null });
   };
 
   const handleTaskAction = (event: any) => {

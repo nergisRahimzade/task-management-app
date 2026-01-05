@@ -16,13 +16,7 @@ import { DialogComponent } from '../dialog-component/DialogComponent';
 import {deleteTask} from '../../services/deleteTask.ts';
 import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
 import type { Task } from '../../../public/typeTask.ts';
-
-interface TaskComponentsProps {
-  taskData: Task[],
-  setTaskData: React.Dispatch<React.SetStateAction<Task[]>>,
-  refreshTasks: () => Promise<void>,
-  chosenStatus: string
-}
+import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
 
 export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskComponentsProps) {
   //chosenStatus is for filtering task 
@@ -185,12 +179,6 @@ export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskCom
 
     </>
   );
-}
-
-interface TaskComponentsProps {
-  taskData: Task[],
-  setTaskData: React.Dispatch<React.SetStateAction<Task[]>>,
-  refreshTasks: () => Promise<void>
 }
 
 interface TaskChangeButtonsProps {

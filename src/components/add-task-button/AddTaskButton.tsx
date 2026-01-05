@@ -8,9 +8,7 @@ import '../../assets/icons/add-icon.png';
 import './AddTaskButton.css';
 import { DialogComponent } from '../dialog-component/DialogComponent';
 
-interface AddTaskButtonProps {
-  refreshTasks: () => Promise<void>
-}
+import type { AddTaskButtonProps } from '../../../public/props/AddTaskButtonProps.ts';
 
 export function AddTaskButton({ refreshTasks }: AddTaskButtonProps) {
   const [open, setOpen] = useState(false);
