@@ -40,19 +40,6 @@ export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }:
     setTask({ ...task, dueDate: newValue });
   };
 
-  /*
-  const handleStatusChange = async (newStatus: string) => {
-    await fetch('http://localhost:3000/tasks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...task,
-        status: newStatus
-      })
-    });
-  };
-  */
-
   const isFormValid = useMemo<boolean>((): boolean => {
     return task.title.length > 0 
       && task.description.length > 0 

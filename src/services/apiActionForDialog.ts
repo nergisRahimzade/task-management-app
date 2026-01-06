@@ -22,7 +22,9 @@ export const apiActionForDialog = (task: Task) => {
   }
 
   else {
-    return api.put(fetchURL);
+    return api.put(fetchURL, {
+      ...task
+    });
   }
 
 };

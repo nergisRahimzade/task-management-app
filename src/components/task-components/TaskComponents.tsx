@@ -17,6 +17,7 @@ import {deleteTask} from '../../services/deleteTask.ts';
 import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
 import type { Task } from '../../../public/typeTask.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
+import type { TaskChangeButtonsProps } from '../../../public/props/TaskChangeButtonsProps.ts';
 
 export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskComponentsProps) {
   //chosenStatus is for filtering task 
@@ -179,12 +180,6 @@ export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskCom
 
     </>
   );
-}
-
-interface TaskChangeButtonsProps {
-  handleDelete: (updatedTask: Task) => void | Promise<void>,
-  handleEdit: (updatedTask: Task) => void | Promise<void>,
-  taskItem: Task
 }
 
 export function TaskChangeButtons({ handleDelete, handleEdit, taskItem }: TaskChangeButtonsProps) {
