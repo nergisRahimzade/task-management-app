@@ -18,8 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export function FilterTasks({ refreshTasks }: FilterTasksProps) {
-  const [chosenStatus, setChosenStatus] = useState('');
+export function FilterTasks({ refreshTasks, chosenStatus, setChosenStatus }: FilterTasksProps) {
   const [open, setOpen] = useState(false);
 
   const handleChange = (event: SelectChangeEvent) => {

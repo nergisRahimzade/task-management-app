@@ -6,6 +6,7 @@ import type { Task } from '../../public/typeTask.ts';
 import { fethcedParsedTasks } from '../services/fetchTasks.ts';
 
 import { FilterTasks } from '../components/filter-tasks/FilterTasks.tsx';
+import { TaskList } from '../components/tasklist-component/TaskList.tsx';
 
 export function Home() {
   const [taskData, setTaskData] = useState<Task[]>([]);
@@ -24,37 +25,10 @@ export function Home() {
   return (
     <div className='container'>
       <div className='button-filter-container'>
-        <FilterTasks refreshTasks={refreshTasks} /> 
+        <FilterTasks refreshTasks={refreshTasks} chosenStatus={chosenStatus} setChosenStatus={setChosenStatus} /> 
       </div>
 
-      <div className='header-container'> 
-        <div className='header-title'>
-          Title
-        </div>
-
-        <div className='header-description'>
-          Description
-        </div>
-
-        <div className='header-status'>
-          Status
-        </div>
-
-        <div className='header-due-date'>
-          Due Date
-        </div>
-
-        <div className='header-due-date'>
-          Actions
-        </div>
-      </div>
-
-      <TaskComponents 
-        refreshTasks={refreshTasks} 
-        taskData={taskData} 
-        setTaskData={setTaskData} 
-        chosenStatus={chosenStatus}
-      />
+      <TaskList refreshTasks={refreshTasks} taskData={taskData} setTaskData={setTaskData} chosenStatus={chosenStatus} />
 
     </div>
   )
