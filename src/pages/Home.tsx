@@ -1,33 +1,16 @@
 import './Home.css'
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
-import { AddTaskButton } from '../components/add-task-button/AddTaskButton.tsx';
 import { TaskComponents } from '../components/task-components/TaskComponents.tsx';
-import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
+import { type SelectChangeEvent } from '@mui/material';
 
 import type { Task } from '../../public/typeTask.ts';
 import { fethcedParsedTasks } from '../services/fetchTasks.ts';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#f0f0f0ff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: (theme.vars ?? theme).palette.text.secondary,
-  ...theme.applyStyles('dark', {
-    backgroundColor: '#1A2027',
-  }),
-}));
+import { FilterTasks } from '../components/filter-tasks/FilterTasks.tsx';
 
 export function Home() {
   const [taskData, setTaskData] = useState<Task[]>([]);
   const [chosenStatus, setChosenStatus] = useState('');
-
-  const handleChange = (event:  SelectChangeEvent) => {
-    setChosenStatus(event.target.value);
-    refreshTasks();
-  };
 
   const refreshTasks = async () => {
     const parsedData = await fethcedParsedTasks();
@@ -42,30 +25,7 @@ export function Home() {
   return (
     <div className='container'>
       <div className='button-filter-container'>
-        <Item className='add-task-button'>
-          <AddTaskButton refreshTasks={refreshTasks} />
-        </Item>
-
-        <Item className='filter-task-component'>
-          <FormControl sx={{ mindWidth: 120 }}>
-            <InputLabel id='demo-simple-select-label'>
-              Filter By
-            </InputLabel>
-            <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
-              value={chosenStatus}
-              label='Filter By'
-              onChange={handleChange}
-              sx={{ minWidth: 120 }}
-            >
-              <MenuItem value=''>None</MenuItem>
-              <MenuItem value='TD'>To Do</MenuItem>
-              <MenuItem value='IP'>In Progress</MenuItem>
-              <MenuItem value='D'>Done</MenuItem>
-            </Select>
-          </FormControl>
-        </Item>
+        <FilterTasks refreshTasks={refreshTasks} /> 
       </div>
 
       <div className='header-container'> 
