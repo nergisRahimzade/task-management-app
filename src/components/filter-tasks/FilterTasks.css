@@ -1,0 +1,46 @@
+.button-filter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+.add-task-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.filter-task-component {
+  display: inline-block;
+}
+
+.add-task-button-icon {
+  width: 26px;
+}
+
+.add-task-dialog {
+  border: none;
+  border-radius: 1rem;
+}
+
+.add-task-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 400px;
+}
+
+.add-task-dialog ::backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.add-task-dialog-component {
+  margin-bottom: 10px;
+}
+
+.add-task-dialog-component-select {
+  border-color: lightgrey;
+  border-style: solid;
+  border-radius: 8px;
+  padding: 10px;
+}
