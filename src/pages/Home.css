@@ -6,22 +6,6 @@ body{
   padding: 20px;    
 }
 
-.button-filter-container {
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-}
-
-.add-task-button {
-  display: inline-block;
-  margin-bottom: 20px;
-  margin-right: 20px;
-}
-
-.filter-task-component {
-  display: inline-block;
-}
-
 .header-container {
   display: grid;
   grid-template-columns: 1fr 3fr 250px 250px 150px;

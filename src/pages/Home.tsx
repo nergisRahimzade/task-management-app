@@ -1,7 +1,6 @@
 import './Home.css'
 import { useState, useEffect } from 'react';
 import { TaskComponents } from '../components/task-components/TaskComponents.tsx';
-import { type SelectChangeEvent } from '@mui/material';
 
 import type { Task } from '../../public/typeTask.ts';
 import { fethcedParsedTasks } from '../services/fetchTasks.ts';

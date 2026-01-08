@@ -1,9 +1,17 @@
-.add-task-button {
-  background-color: purple;
+.button-filter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
 }
 
-.add-task-button-text {
-  font-size: 15px;
+.add-task-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.filter-task-component {
+  display: inline-block;
 }
 
 .add-task-button-icon {
@@ -35,9 +43,4 @@
   border-style: solid;
   border-radius: 8px;
   padding: 10px;
-}
-
-.add-task-dialog-done-button {
-  border-radius: 10px;
-  background-color: green;
 }
