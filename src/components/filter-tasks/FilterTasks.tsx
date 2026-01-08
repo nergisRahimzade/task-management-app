@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { DialogComponent } from '../dialog-component/DialogComponent';
 import { useState } from 'react';
 import type { FilterTasksProps } from '../../../public/props/FilterTasksProps.ts';
+import './FilterTasks.css';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',
