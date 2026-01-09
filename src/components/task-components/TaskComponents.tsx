@@ -13,16 +13,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DialogComponent } from '../dialog-component/DialogComponent';
 
-import {deleteTask} from '../../services/deleteTask.ts';
+import { deleteTask } from '../../services/deleteTask.ts';
 import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
 import type { Task } from '../../../public/typeTask.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
 import type { TaskChangeButtonsProps } from '../../../public/props/TaskChangeButtonsProps.ts';
 
-export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskComponentsProps) {
+export function TaskComponents({ taskData, refreshTasks, chosenStatus, dialogComponentId, setDialogComponentId, selectedTask, setSelectedTask, taskToEdit, setTaskToEdit }: TaskComponentsProps) {
   //chosenStatus is for filtering task 
   const [open, setOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const handleDelete = async (deletedTask: Task): Promise<void> => {
     await deleteTask(deletedTask);
@@ -31,23 +30,15 @@ export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskCom
 
   const handleEdit = async (task: Task) => {
     setSelectedTask(task);
-    handleShowModal();
+    setTaskToEdit(selectedTask);
+    setDialogComponentId('Edit Task');
+    setOpen(true);
   };
 
   const handleStatusChange = async (taskItem: Task, newStatus: string) => {
     await updateTaskStatus(taskItem, newStatus);
     refreshTasks();
   };
-
-  const handleShowModal = async () => {
-    setOpen(true);
-  }
-
-  const handleCloseModal = () => {
-    setOpen(false);
-    setSelectedTask(null);
-  };
-  
 
   return (
     <>
@@ -103,7 +94,7 @@ export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskCom
                   </LocalizationProvider>
                 </div>
 
-                  <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
+                <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
               </div>
             )}
 
@@ -163,20 +154,6 @@ export function TaskComponents({ taskData, refreshTasks, chosenStatus }: TaskCom
 
         </div>
       ))}
-
-      {(
-        <>
-          <DialogComponent
-            refreshTasks={refreshTasks}
-            id='Task Components'
-            open={open}
-            onClose={handleCloseModal}
-            taskToEdit={selectedTask}
-          />
-
-          {/* think if onClose and open should be deleted or not */}
-        </>
-      )}
 
     </>
   );

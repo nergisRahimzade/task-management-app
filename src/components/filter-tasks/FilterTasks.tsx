@@ -18,7 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export function FilterTasks({ refreshTasks, chosenStatus, setChosenStatus }: FilterTasksProps) {
+export function FilterTasks({ refreshTasks, chosenStatus, setChosenStatus, dialogComponentId, setDialogComponentId, selectedTask, setSelectedTask, taskToEdit, setTaskToEdit }: FilterTasksProps) {
   const [open, setOpen] = useState(false);
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -26,26 +26,21 @@ export function FilterTasks({ refreshTasks, chosenStatus, setChosenStatus }: Fil
     refreshTasks();
   };
 
+  const handleAddButtonClick = () => {
+    setDialogComponentId('Add Task');
+    setTaskToEdit(null);
+    setOpen(true);
+  }
 
   return (
     <>
       <div className='button-filter-container'>
         <Item className='add-task-button'>
           <Stack direction="row" spacing={0.5}>
-            <IconButton sx={{ height: 56 }} className='add-task-button' aria-label="add" onClick={() => {
-              setOpen(true);
-            }}>
+            <IconButton sx={{ height: 56 }} className='add-task-button' aria-label="add" onClick={handleAddButtonClick}>
               <AddIcon className='add-task-button-icon' /> <span className='add-task-button-text'>Add Task</span>
             </IconButton>
           </Stack>
-
-          <DialogComponent
-            refreshTasks={refreshTasks}
-            id='Add Task'
-            open={open}
-            onClose={() => setOpen(false)}
-            taskToEdit={null}
-          />
         </Item>
 
         <Item className='filter-task-component'>

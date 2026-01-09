@@ -3,7 +3,9 @@ import type { Task } from '../typeTask.ts';
 export type DialogComponentProps = {
   refreshTasks: () => Promise<void>,
   id: string,
-  open: boolean,     
-  onClose: () => void,
-  taskToEdit?: Task | null
+  open: boolean,
+  setOpen: (value: React.SetStateAction<boolean>) => void,
+  taskToEdit?: Task | null,
+  selectedTask: Task | null,
+  setSelectedTask: (value: React.SetStateAction<Task | null>) => void
 }
