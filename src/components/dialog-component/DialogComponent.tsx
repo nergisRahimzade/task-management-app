@@ -8,23 +8,11 @@ import { Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, M
 import { useEffect, useMemo, useState } from 'react';
 import './DialogComponent.css';
 
-interface Task {
-  id: string,
-  title: string,
-  description: string,
-  status: string,
-  dueDate: Dayjs | null
-}
+import type { Task } from '../../../public/typeTask.ts';
+import type { DialogComponentProps } from '../../../public/props/DialogComponentProps.ts';
+import { apiActionForDialog } from '../../services/apiActionForDialog.ts';
 
-interface DialogComponentProps {
-  refreshTasks: () => Promise<void>,
-  id: string,
-  open: boolean,     
-  onClose: () => void,
-  taskToEdit?: Task | null
-}
-
-export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }: DialogComponentProps) {
+export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }: DialogComponentProps) {
   let addTaskOn = id === 'Add Task' ? true : false;
   const [task, setTask] = useState<Task>(taskToEdit || {
     id: '',
@@ -33,15 +21,25 @@ export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }:
     status: '',
     dueDate: null
   });
+  
+  const changeTask = async () => {
+    if(taskToEdit)
+      await setTask(taskToEdit);
+  };
 
   useEffect(() => {
-    if(taskToEdit)
-      setTask(taskToEdit);
+      changeTask();
+      console.log('DialogComponent -> task : ', task);
+      console.log('DialogComponent -> taskToEdit : ', taskToEdit);
   }, [taskToEdit]);
 
+  useEffect(() => {
+    console.log('DialogComponent -> task 2 : ', task);
+  }, [task]);
+
   const handleCloseModal = () => {
+    setOpen(false);
     setTask({ id: '', title: '', description: '', status: '', dueDate: null });
-    onClose();
   };
 
   const handleTaskAction = (event: any) => {
@@ -52,19 +50,6 @@ export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }:
     setTask({ ...task, dueDate: newValue });
   };
 
-  /*
-  const handleStatusChange = async (newStatus: string) => {
-    await fetch('http://localhost:3000/tasks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...task,
-        status: newStatus
-      })
-    });
-  };
-  */
-
   const isFormValid = useMemo<boolean>((): boolean => {
     return task.title.length > 0 
       && task.description.length > 0 
@@ -73,32 +58,9 @@ export function DialogComponent({ refreshTasks, id, open, onClose, taskToEdit }:
   }, [task]);
 
   const handleSubmit = async () => {
-    let requestType = '';
-    let fetchUrl = 'http://localhost:3000/tasks';
-    if (task.id === '') {
-      requestType = 'POST';
-    }
-
-    else {
-      requestType = 'PUT';
-      fetchUrl = fetchUrl + `/${task.id}`;
-    }
-
-    await fetch(fetchUrl, {
-      method: requestType,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: task.id === '' ? crypto.randomUUID() : task.id,
-        title: task.title,
-        description: task.description,
-        status: task.status,
-        dueDate: task.dueDate
-      })
-    });
-
+    await apiActionForDialog(task);
     handleCloseModal();
     refreshTasks();
-
   };
 
   return (
