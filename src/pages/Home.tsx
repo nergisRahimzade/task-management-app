@@ -33,26 +33,22 @@ export function Home() {
           refreshTasks={refreshTasks}
           chosenStatus={chosenStatus}
           setChosenStatus={setChosenStatus}
-          dialogComponentId={dialogComponentId}
           setDialogComponentId={setDialogComponentId}
-          selectedTask={selectedTask}
-          setSelectedTask={setSelectedTask}
-          taskToEdit={taskToEdit}
           setTaskToEdit={setTaskToEdit}
+          setOpen={setOpen}
         />
       </div>
 
       <TaskList
         refreshTasks={refreshTasks}
         taskData={taskData}
-        setTaskData={setTaskData}
         chosenStatus={chosenStatus}
         dialogComponentId={dialogComponentId}
         setDialogComponentId={setDialogComponentId}
         selectedTask={selectedTask}
         setSelectedTask={setSelectedTask}
-        taskToEdit={taskToEdit}
-          setTaskToEdit={setTaskToEdit}
+        setTaskToEdit={setTaskToEdit}
+        setOpen={setOpen}
       />
 
       <DialogComponent
@@ -61,7 +57,6 @@ export function Home() {
         open={open}
         setOpen={setOpen}
         taskToEdit={taskToEdit}
-        selectedTask={selectedTask}
         setSelectedTask={setSelectedTask}
       />
 

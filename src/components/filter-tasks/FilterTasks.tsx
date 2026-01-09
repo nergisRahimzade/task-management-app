@@ -2,8 +2,6 @@ import { FormControl, IconButton, InputLabel, MenuItem, Select, Stack, type Sele
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import AddIcon from '@mui/icons-material/Add';
-import { DialogComponent } from '../dialog-component/DialogComponent';
-import { useState } from 'react';
 import type { FilterTasksProps } from '../../../public/props/FilterTasksProps.ts';
 import './FilterTasks.css';
 
@@ -18,9 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export function FilterTasks({ refreshTasks, chosenStatus, setChosenStatus, dialogComponentId, setDialogComponentId, selectedTask, setSelectedTask, taskToEdit, setTaskToEdit }: FilterTasksProps) {
-  const [open, setOpen] = useState(false);
-
+export function FilterTasks({ refreshTasks, chosenStatus, setChosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: FilterTasksProps) {
   const handleChange = (event: SelectChangeEvent) => {
     setChosenStatus(event.target.value);
     refreshTasks();

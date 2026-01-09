@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import './TaskComponents.css';
 
@@ -11,7 +9,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { DialogComponent } from '../dialog-component/DialogComponent';
 
 import { deleteTask } from '../../services/deleteTask.ts';
 import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
@@ -19,10 +16,7 @@ import type { Task } from '../../../public/typeTask.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
 import type { TaskChangeButtonsProps } from '../../../public/props/TaskChangeButtonsProps.ts';
 
-export function TaskComponents({ taskData, refreshTasks, chosenStatus, dialogComponentId, setDialogComponentId, selectedTask, setSelectedTask, taskToEdit, setTaskToEdit }: TaskComponentsProps) {
-  //chosenStatus is for filtering task 
-  const [open, setOpen] = useState(false);
-
+export function TaskComponents({ taskData, refreshTasks, chosenStatus, setDialogComponentId, selectedTask, setSelectedTask, setTaskToEdit, setOpen }: TaskComponentsProps) {
   const handleDelete = async (deletedTask: Task): Promise<void> => {
     await deleteTask(deletedTask);
     refreshTasks();

@@ -6,6 +6,5 @@ export type DialogComponentProps = {
   open: boolean,
   setOpen: (value: React.SetStateAction<boolean>) => void,
   taskToEdit?: Task | null,
-  selectedTask: Task | null,
   setSelectedTask: (value: React.SetStateAction<Task | null>) => void
 }
