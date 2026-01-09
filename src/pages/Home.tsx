@@ -14,7 +14,6 @@ export function Home() {
   const [dialogComponentId, setDialogComponentId] = useState('');
   const [open, setOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const refreshTasks = async () => {
     const parsedData = await fethcedParsedTasks();
@@ -24,6 +23,10 @@ export function Home() {
   useEffect(() => {
     refreshTasks();
   }, []);
+
+  useEffect(() => {
+    console.log('Home -> taskToEdit : ', taskToEdit);
+  }, [taskToEdit]);
 
 
   return (
@@ -45,8 +48,6 @@ export function Home() {
         chosenStatus={chosenStatus}
         dialogComponentId={dialogComponentId}
         setDialogComponentId={setDialogComponentId}
-        selectedTask={selectedTask}
-        setSelectedTask={setSelectedTask}
         setTaskToEdit={setTaskToEdit}
         setOpen={setOpen}
       />
@@ -57,7 +58,6 @@ export function Home() {
         open={open}
         setOpen={setOpen}
         taskToEdit={taskToEdit}
-        setSelectedTask={setSelectedTask}
       />
 
     </div>

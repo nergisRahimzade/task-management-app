@@ -16,22 +16,22 @@ import type { Task } from '../../../public/typeTask.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
 import type { TaskChangeButtonsProps } from '../../../public/props/TaskChangeButtonsProps.ts';
 
-export function TaskComponents({ taskData, refreshTasks, chosenStatus, setDialogComponentId, selectedTask, setSelectedTask, setTaskToEdit, setOpen }: TaskComponentsProps) {
+export function TaskComponents({ taskData, refreshTasks, chosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
   const handleDelete = async (deletedTask: Task): Promise<void> => {
     await deleteTask(deletedTask);
     refreshTasks();
   };
 
   const handleEdit = async (task: Task) => {
-    setSelectedTask(task);
-    setTaskToEdit(selectedTask);
-    setDialogComponentId('Edit Task');
+    await setTaskToEdit(task);
+    console.log('TaskComponents -> taskToEdit: ',task);
+    await setDialogComponentId('Edit');
     setOpen(true);
   };
 
   const handleStatusChange = async (taskItem: Task, newStatus: string) => {
     await updateTaskStatus(taskItem, newStatus);
-    refreshTasks();
+    await refreshTasks();
   };
 
   return (

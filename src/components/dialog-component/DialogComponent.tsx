@@ -12,7 +12,7 @@ import type { Task } from '../../../public/typeTask.ts';
 import type { DialogComponentProps } from '../../../public/props/DialogComponentProps.ts';
 import { apiActionForDialog } from '../../services/apiActionForDialog.ts';
 
-export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit, setSelectedTask }: DialogComponentProps) {
+export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }: DialogComponentProps) {
   let addTaskOn = id === 'Add Task' ? true : false;
   const [task, setTask] = useState<Task>(taskToEdit || {
     id: '',
@@ -21,19 +21,24 @@ export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit, s
     status: '',
     dueDate: null
   });
+  
+  const changeTask = async () => {
+    if(taskToEdit)
+      await setTask(taskToEdit);
+  };
 
   useEffect(() => {
-    if(taskToEdit)
-      setTask(taskToEdit);
+      changeTask();
+      console.log('DialogComponent -> task : ', task);
+      console.log('DialogComponent -> taskToEdit : ', taskToEdit);
   }, [taskToEdit]);
+
+  useEffect(() => {
+    console.log('DialogComponent -> task 2 : ', task);
+  }, [task]);
 
   const handleCloseModal = () => {
     setOpen(false);
-    
-    if(!addTaskOn) {
-      setSelectedTask(null);
-    }
-
     setTask({ id: '', title: '', description: '', status: '', dueDate: null });
   };
 

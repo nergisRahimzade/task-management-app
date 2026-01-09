@@ -22,10 +22,10 @@ export function FilterTasks({ refreshTasks, chosenStatus, setChosenStatus, setDi
     refreshTasks();
   };
 
-  const handleAddButtonClick = () => {
-    setDialogComponentId('Add Task');
-    setTaskToEdit(null);
-    setOpen(true);
+  const handleAddButtonClick = async () => {
+    await setDialogComponentId('Add Task');
+    await setTaskToEdit(null);
+    await setOpen(true);
   }
 
   return (

@@ -2,7 +2,7 @@ import { TaskComponents } from '../task-components/TaskComponents';
 import { Header } from '../header/Header.tsx';
 import type { TaskListProps } from '../../../public/props/TaskListProps.ts';
 
-export function TaskList({refreshTasks, taskData, chosenStatus, dialogComponentId, setDialogComponentId, selectedTask, setSelectedTask, setTaskToEdit, setOpen}: TaskListProps) {
+export function TaskList({refreshTasks, taskData, chosenStatus, dialogComponentId, setDialogComponentId, setTaskToEdit, setOpen}: TaskListProps) {
   return (
     <>
       <Header />
@@ -13,8 +13,6 @@ export function TaskList({refreshTasks, taskData, chosenStatus, dialogComponentI
         chosenStatus={chosenStatus}
         dialogComponentId={dialogComponentId}
         setDialogComponentId={setDialogComponentId}
-        selectedTask={selectedTask}
-        setSelectedTask={setSelectedTask}
         setTaskToEdit={setTaskToEdit}
         setOpen={setOpen}
       />
