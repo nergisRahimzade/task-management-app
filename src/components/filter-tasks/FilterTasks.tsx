@@ -16,16 +16,15 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export function FilterTasks({ refreshTasks, chosenStatus, setChosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: FilterTasksProps) {
-  const handleChange = (event: SelectChangeEvent) => {
+export function FilterTasks({ chosenStatus, setChosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: FilterTasksProps) {
+  const handleChange = async (event: SelectChangeEvent) => {
     setChosenStatus(event.target.value);
-    refreshTasks();
   };
 
   const handleAddButtonClick = async () => {
-    await setDialogComponentId('Add Task');
-    await setTaskToEdit(null);
-    await setOpen(true);
+    setDialogComponentId('Add Task');
+    setTaskToEdit(null);
+    setOpen(true);
   }
 
   return (

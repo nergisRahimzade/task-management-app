@@ -1,5 +1,5 @@
 import './Home.css'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import type { Task } from '../../public/typeTask.ts';
 import { fethcedParsedTasks } from '../services/fetchTasks.ts';
@@ -9,7 +9,7 @@ import { TaskList } from '../components/tasklist-component/TaskList.tsx';
 import { DialogComponent } from '../components/dialog-component/DialogComponent.tsx';
 
 export function Home() {
-  const [taskData, setTaskData] = useState<Task[]>([]);
+  const [allTasks, setAllTasks] = useState<Task[]>([]);
   const [chosenStatus, setChosenStatus] = useState('');
   const [dialogComponentId, setDialogComponentId] = useState('');
   const [open, setOpen] = useState(false);
@@ -17,8 +17,21 @@ export function Home() {
 
   const refreshTasks = async () => {
     const parsedData = await fethcedParsedTasks();
-    setTaskData(parsedData);
+    setAllTasks(parsedData);
   };
+
+  const taskData = useMemo(() => {
+    if(chosenStatus === '')
+      return allTasks;
+
+    else {
+      //shortcut of 
+      // return allTasks.filter((taskItem) => {
+      //   return taskItem.status === chosenStatus;
+      // });
+      return allTasks.filter(task => task.status === chosenStatus);
+    }
+  }, [allTasks, chosenStatus]);
 
   useEffect(() => {
     refreshTasks();
@@ -33,7 +46,6 @@ export function Home() {
     <div className='container'>
       <div className='button-filter-container'>
         <FilterTasks
-          refreshTasks={refreshTasks}
           chosenStatus={chosenStatus}
           setChosenStatus={setChosenStatus}
           setDialogComponentId={setDialogComponentId}
@@ -45,7 +57,6 @@ export function Home() {
       <TaskList
         refreshTasks={refreshTasks}
         taskData={taskData}
-        chosenStatus={chosenStatus}
         dialogComponentId={dialogComponentId}
         setDialogComponentId={setDialogComponentId}
         setTaskToEdit={setTaskToEdit}

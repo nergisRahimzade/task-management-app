@@ -16,7 +16,7 @@ import type { Task } from '../../../public/typeTask.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
 import type { TaskChangeButtonsProps } from '../../../public/props/TaskChangeButtonsProps.ts';
 
-export function TaskComponents({ taskData, refreshTasks, chosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
+export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
   const handleDelete = async (deletedTask: Task): Promise<void> => {
     await deleteTask(deletedTask);
     refreshTasks();
@@ -24,7 +24,7 @@ export function TaskComponents({ taskData, refreshTasks, chosenStatus, setDialog
 
   const handleEdit = async (task: Task) => {
     await setTaskToEdit(task);
-    console.log('TaskComponents -> taskToEdit: ',task);
+    console.log('TaskComponents -> taskToEdit: ', task);
     await setDialogComponentId('Edit');
     setOpen(true);
   };
@@ -40,109 +40,56 @@ export function TaskComponents({ taskData, refreshTasks, chosenStatus, setDialog
         <div key={taskItem.id} className='tasks-container'>
 
           <div >
-            {(chosenStatus !== '') && (taskItem.status === chosenStatus) && (
-              <div className='taskItems-container'>
-                <div className='title'>
-                  {taskItem.title}
-                </div>
 
-                <div className='description'>
-                  {taskItem.description}
-                </div>
-
-                <div className='status'>
-                  <FormControl required sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel
-                      id="demo-simple-select-required-label"
-                    >
-                      Status
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-required-label"
-                      id="demo-simple-select-required"
-                      value={taskItem.status}
-                      label="Status"
-                      name='status'
-                      onChange={(event) => { handleStatusChange(taskItem, event.target.value) }}
-                    >
-                      <MenuItem value='TD'>TD</MenuItem>
-                      <MenuItem value='IP'>IP</MenuItem>
-                      <MenuItem value='D'>D</MenuItem>
-
-                    </Select>
-
-                  </FormControl>
-
-                </div>
-
-                <div className='due-date'>
-                  <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                  >
-                    <DatePicker
-                      name='dueDate'
-                      value={taskItem.dueDate}
-                      label='Due Date'
-                      readOnly
-                    />
-                  </LocalizationProvider>
-                </div>
-
-                <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
+            <div className='taskItems-container'>
+              <div className='title'>
+                {taskItem.title}
               </div>
-            )}
 
-            {(chosenStatus === '') && (
-              <div className='taskItems-container'>
-                <div className='title'>
-                  {taskItem.title}
-                </div>
-
-                <div className='description'>
-                  {taskItem.description}
-                </div>
-
-                <div className='status'>
-                  <FormControl required sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel
-                      id="demo-simple-select-required-label"
-                    >
-                      Status
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-required-label"
-                      id="demo-simple-select-required"
-                      value={taskItem.status}
-                      label="Status"
-                      name='status'
-                      onChange={(event) => { handleStatusChange(taskItem, event.target.value) }}
-                    >
-                      <MenuItem value='TD'>TD</MenuItem>
-                      <MenuItem value='IP'>IP</MenuItem>
-                      <MenuItem value='D'>D</MenuItem>
-
-                    </Select>
-
-                  </FormControl>
-
-                </div>
-
-                <div className='due-date'>
-                  <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                  >
-                    <DatePicker
-                      name='dueDate'
-                      value={taskItem.dueDate}
-                      label='Due Date'
-                      readOnly
-                    />
-                  </LocalizationProvider>
-                </div>
-
-                <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
+              <div className='description'>
+                {taskItem.description}
               </div>
-            )}
+
+              <div className='status'>
+                <FormControl required sx={{ m: 1, minWidth: 120 }}>
+                  <InputLabel
+                    id="demo-simple-select-required-label"
+                  >
+                    Status
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-required-label"
+                    id="demo-simple-select-required"
+                    value={taskItem.status}
+                    label="Status"
+                    name='status'
+                    onChange={(event) => { handleStatusChange(taskItem, event.target.value) }}
+                  >
+                    <MenuItem value='TD'>TD</MenuItem>
+                    <MenuItem value='IP'>IP</MenuItem>
+                    <MenuItem value='D'>D</MenuItem>
+
+                  </Select>
+
+                </FormControl>
+
+              </div>
+
+              <div className='due-date'>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                >
+                  <DatePicker
+                    name='dueDate'
+                    value={taskItem.dueDate}
+                    label='Due Date'
+                    readOnly
+                  />
+                </LocalizationProvider>
+              </div>
+
+              <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
+            </div>
 
           </div>
 
