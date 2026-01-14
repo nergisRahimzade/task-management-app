@@ -3,30 +3,30 @@
     {
       "id": "27d8f0aa-a9d0-4d64-8410-0809357cb551",
       "title": "get groceries",
-      "description": "buy apples, eggs and celery",
-      "status": "TD",
+      "description": "buy apples, eggs, celery and carrots",
+      "status": "D",
       "dueDate": "2025-12-23T08:00:00.000Z"
     },
     {
       "id": "5b0c8629-6a86-476c-a71d-5f3a88bfbf05",
       "title": "drink 2L of water",
       "description": "don't forget to drink water ",
-      "status": "IP",
+      "status": "TD",
       "dueDate": "2025-12-24T08:00:00.000Z"
     },
     {
       "id": "38ce1062-2b15-4ae3-b6cb-4dcabc38e061",
       "title": "go to gym",
       "description": "run on treadmill for 30 min",
-      "status": "D",
+      "status": "IP",
       "dueDate": "2025-12-21T08:00:00.000Z"
     },
     {
-      "id": "a249f5a4-0b34-4113-8821-e05beba7807f",
-      "title": "test",
+      "id": "dddb8162-77cb-4990-92f2-4f443a068ae7",
+      "title": "test2",
       "description": "test",
       "status": "TD",
-      "dueDate": "2025-12-09T08:00:00.000Z"
+      "dueDate": "2026-01-22T08:00:00.000Z"
     }
   ]
 }
