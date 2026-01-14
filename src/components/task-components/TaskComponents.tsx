@@ -15,22 +15,9 @@ import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
 import type { Task } from '../../../public/typeTask.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
 import type { TaskChangeButtonsProps } from '../../../public/props/TaskChangeButtonsProps.ts';
-import { useEffect, useState } from 'react';
 import { updateChanges } from '../../services/updateChanges.ts';
 
 export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
-  //const [disabled, setDisabled] = useState(true);
-  const [textboxActive, setTextboxActive] = useState(false);
-
-  const handleClick = async (task: Task, event: any, keyword: string) => {
-    //setTextboxActive(true);
-    await updateChanges(task, event?.target.value, keyword);
-    refreshTasks();
-  };
-
-  //useEffect(() => {
-  //}, [textboxActive]);
-
   const handleDelete = async (deletedTask: Task): Promise<void> => {
     await deleteTask(deletedTask);
     refreshTasks();
@@ -55,77 +42,82 @@ export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, s
 
           <div>
             <div className='taskItems-container'>
-              <TextField
-                className='title'
-                onChange={(event) => {
-                  console.log(event.target.value);
-                  updateChanges(taskItem, event.target.value, 'title');
-                }}
-                defaultValue={taskItem.title}
-                type='search'
-              >
-                
-              </TextField>
-
-              <TextField
-                className='description'
-                onChange={(event) => {
-                  console.log(event.target.value);
-                  updateChanges(taskItem, event.target.value, 'description');
-                }}
-                defaultValue={taskItem.description}
-              >
-                {taskItem.description}
-              </TextField>
-
-              <div className='status'>
-                <FormControl required sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel
-                    id="demo-simple-select-required-label"
-                  >
-                    Status
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-required-label"
-                    id="demo-simple-select-required"
-                    value={taskItem.status}
-                    label="Status"
-                    name='status'
-                    onChange={(event) => { handleStatusChange(taskItem, event.target.value) }}
-                  >
-                    <MenuItem value='TD'>TD</MenuItem>
-                    <MenuItem value='IP'>IP</MenuItem>
-                    <MenuItem value='D'>D</MenuItem>
-
-                  </Select>
-
-                </FormControl>
-
+              <div className='title'>
+                <TextField
+                  fullWidth
+                  className='title-textfield'
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                    updateChanges(taskItem, event.target.value, 'title');
+                    refreshTasks();
+                  }}
+                  defaultValue={taskItem.title}
+                  type='search'
+                />
               </div>
 
-              <div className='due-date'>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
+              <div className='description'>
+                <TextField
+                  fullWidth
+                  className='description-textfield'
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                    updateChanges(taskItem, event.target.value, 'description');
+                    refreshTasks();
+                  }}
+                  defaultValue={taskItem.description}
+                />
+              </div>
+
+            <div className='status'>
+              <FormControl required fullWidth sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel
+                  id="demo-simple-select-required-label"
                 >
-                  <DatePicker
-                    name='dueDate'
-                    defaultValue={taskItem.dueDate}
-                    label='Due Date'
-                    onChange={(event) => {
-                      updateChanges(taskItem, event , 'dueDate');
-                      refreshTasks();
-                    }}
-                  />
-                </LocalizationProvider>
-              </div>
+                  Status
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-required-label"
+                  id="demo-simple-select-required"
+                  value={taskItem.status}
+                  label="Status"
+                  name='status'
+                  onChange={(event) => { handleStatusChange(taskItem, event.target.value) }}
+                >
+                  <MenuItem value='TD'>TD</MenuItem>
+                  <MenuItem value='IP'>IP</MenuItem>
+                  <MenuItem value='D'>D</MenuItem>
 
-              <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
+                </Select>
+
+              </FormControl>
+
             </div>
 
+            <div className='due-date'>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+              >
+                <DatePicker
+                  name='dueDate'
+                  defaultValue={taskItem.dueDate}
+                  label='Due Date'
+                  onChange={(event) => {
+                    updateChanges(taskItem, event, 'dueDate');
+                    refreshTasks();
+                  }}
+                />
+              </LocalizationProvider>
+            </div>
+
+            <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
           </div>
 
         </div>
-      ))}
+
+        </div >
+      ))
+}
 
     </>
   );
