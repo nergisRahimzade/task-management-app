@@ -42,6 +42,7 @@
 
 .title {
   background-color: rgb(240, 240, 240);
+  color: black;
   border-radius: 20px;
   overflow-wrap: break-word;
   padding: 10px;

@@ -18,6 +18,10 @@
   width: 26px;
 }
 
+.add-task-button-text {
+  font-size: 18px;
+}
+
 .add-task-dialog {
   border: none;
   border-radius: 1rem;

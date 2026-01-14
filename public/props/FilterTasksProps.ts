@@ -1,7 +1,6 @@
 import type { Task } from "../typeTask"
 
 export type FilterTasksProps = {
-  refreshTasks: () => Promise<void>,
   chosenStatus: string,
   setChosenStatus: (value: React.SetStateAction<string>) => void,
   setDialogComponentId: (value: React.SetStateAction<string>) => void,
