@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import './TaskComponents.css';
 
 import IconButton from '@mui/material/IconButton';
@@ -15,8 +15,22 @@ import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
 import type { Task } from '../../../public/typeTask.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
 import type { TaskChangeButtonsProps } from '../../../public/props/TaskChangeButtonsProps.ts';
+import { useEffect, useState } from 'react';
+import { updateChanges } from '../../services/updateChanges.ts';
 
 export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
+  //const [disabled, setDisabled] = useState(true);
+  const [textboxActive, setTextboxActive] = useState(false);
+
+  const handleClick = async (task: Task, event: any, keyword: string) => {
+    //setTextboxActive(true);
+    await updateChanges(task, event?.target.value, keyword);
+    refreshTasks();
+  };
+
+  //useEffect(() => {
+  //}, [textboxActive]);
+
   const handleDelete = async (deletedTask: Task): Promise<void> => {
     await deleteTask(deletedTask);
     refreshTasks();
@@ -39,16 +53,30 @@ export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, s
       {taskData.map((taskItem) => (
         <div key={taskItem.id} className='tasks-container'>
 
-          <div >
-
+          <div>
             <div className='taskItems-container'>
-              <div className='title'>
-                {taskItem.title}
-              </div>
+              <TextField
+                className='title'
+                onChange={(event) => {
+                  console.log(event.target.value);
+                  updateChanges(taskItem, event.target.value, 'title');
+                }}
+                defaultValue={taskItem.title}
+                type='search'
+              >
+                
+              </TextField>
 
-              <div className='description'>
+              <TextField
+                className='description'
+                onChange={(event) => {
+                  console.log(event.target.value);
+                  updateChanges(taskItem, event.target.value, 'description');
+                }}
+                defaultValue={taskItem.description}
+              >
                 {taskItem.description}
-              </div>
+              </TextField>
 
               <div className='status'>
                 <FormControl required sx={{ m: 1, minWidth: 120 }}>
@@ -81,9 +109,12 @@ export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, s
                 >
                   <DatePicker
                     name='dueDate'
-                    value={taskItem.dueDate}
+                    defaultValue={taskItem.dueDate}
                     label='Due Date'
-                    readOnly
+                    onChange={(event) => {
+                      updateChanges(taskItem, event , 'dueDate');
+                      refreshTasks();
+                    }}
                   />
                 </LocalizationProvider>
               </div>
