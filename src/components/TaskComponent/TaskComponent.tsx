@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import './TaskComponents.css';
+import './TaskComponent.css';
 
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -12,12 +12,12 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { deleteTask } from '../../services/deleteTask.ts';
 import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
-import type { Task } from '../../../public/typeTask.ts';
+import type { Task } from '../../../public/props/task.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
-import type { TaskChangeButtonsProps } from '../../../public/props/TaskChangeButtonsProps.ts';
+import type { TaskActionButtonsProps } from '../../../public/props/TaskActionButtonsProps.ts';
 import { updateChanges } from '../../services/updateChanges.ts';
 
-export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
+export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
   const handleDelete = async (deletedTask: Task): Promise<void> => {
     await deleteTask(deletedTask);
     refreshTasks();
@@ -110,7 +110,7 @@ export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, s
               </LocalizationProvider>
             </div>
 
-            <TaskChangeButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
+            <TaskActionButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
           </div>
 
         </div>
@@ -123,7 +123,7 @@ export function TaskComponents({ taskData, refreshTasks, setDialogComponentId, s
   );
 }
 
-export function TaskChangeButtons({ handleDelete, handleEdit, taskItem }: TaskChangeButtonsProps) {
+export function TaskActionButtons({ handleDelete, handleEdit, taskItem }: TaskActionButtonsProps) {
   return (
     <>
 

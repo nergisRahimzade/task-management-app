@@ -6,9 +6,9 @@ import { Dayjs } from 'dayjs';
 
 import { Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import './DialogComponent.css';
+import './TaskFormDialog.css';
 
-import type { Task } from '../../../public/typeTask.ts';
+import type { Task } from '../../../public/props/task.ts';
 import type { DialogComponentProps } from '../../../public/props/DialogComponentProps.ts';
 import { apiActionForDialog } from '../../services/apiActionForDialog.ts';
 

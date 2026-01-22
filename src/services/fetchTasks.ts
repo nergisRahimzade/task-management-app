@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import type { Task } from '../../public/typeTask.ts';
+import type { Task } from '../../public/props/task.ts';
 import { api } from './api.ts';
 
 export const fetchTasks = () => {

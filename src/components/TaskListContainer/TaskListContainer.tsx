@@ -1,13 +1,13 @@
-import { TaskComponents } from '../task-components/TaskComponents';
-import { Header } from '../header/Header.tsx';
+import { TaskComponent } from '../TaskComponent/TaskComponent';
+import { Header } from '../Header/Header.tsx';
 import type { TaskListProps } from '../../../public/props/TaskListProps.ts';
 
-export function TaskList({refreshTasks, taskData, dialogComponentId, setDialogComponentId, setTaskToEdit, setOpen}: TaskListProps) {
+export function TaskListContainer({refreshTasks, taskData, dialogComponentId, setDialogComponentId, setTaskToEdit, setOpen}: TaskListProps) {
   return (
     <>
       <Header />
 
-      <TaskComponents
+      <TaskComponent
         refreshTasks={refreshTasks}
         taskData={taskData}
         dialogComponentId={dialogComponentId}

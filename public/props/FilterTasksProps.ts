@@ -1,4 +1,4 @@
-import type { Task } from "../typeTask"
+import type { Task } from "./task"
 
 export type FilterTasksProps = {
   chosenStatus: string,

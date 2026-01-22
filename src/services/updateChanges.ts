@@ -1,4 +1,4 @@
-import type { Task } from "../../public/typeTask";
+import type { Task } from "../../public/props/task.ts";
 import { api } from './api.ts';
 
 export function updateChanges(task: Task, newValue: any, keyword: string) {

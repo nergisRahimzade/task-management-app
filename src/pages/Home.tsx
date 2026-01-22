@@ -1,12 +1,12 @@
 import './Home.css'
 import { useState, useEffect, useMemo } from 'react';
 
-import type { Task } from '../../public/typeTask.ts';
+import type { Task } from '../../public/props/task.ts';
 import { fethcedParsedTasks } from '../services/fetchTasks.ts';
 
-import { FilterTasks } from '../components/filter-tasks/FilterTasks.tsx';
-import { TaskList } from '../components/tasklist-component/TaskList.tsx';
-import { DialogComponent } from '../components/dialog-component/DialogComponent.tsx';
+import { FilterTasks } from '../components/TaskFilter/TaskFilter.tsx';
+import { TaskListContainer } from '../components/TaskListContainer/TaskListContainer.tsx';
+import { DialogComponent } from '../components/TaskFormDialog/TaskFormDialog.tsx';
 
 export function Home() {
   const [allTasks, setAllTasks] = useState<Task[]>([]);
@@ -54,7 +54,7 @@ export function Home() {
         />
       </div>
 
-      <TaskList
+      <TaskListContainer
         refreshTasks={refreshTasks}
         taskData={taskData}
         dialogComponentId={dialogComponentId}

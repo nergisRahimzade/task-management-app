@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import AddIcon from '@mui/icons-material/Add';
 import type { FilterTasksProps } from '../../../public/props/FilterTasksProps.ts';
-import './FilterTasks.css';
+import './TaskFilter.css';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',

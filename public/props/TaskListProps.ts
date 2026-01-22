@@ -1,4 +1,4 @@
-import type { Task } from '../typeTask.ts';
+import type { Task } from './task.ts';
 
 export type TaskListProps = {
   refreshTasks: () => Promise<void>,
