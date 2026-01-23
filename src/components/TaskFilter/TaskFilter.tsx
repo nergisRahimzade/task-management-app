@@ -16,7 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export function FilterTasks({ chosenStatus, setChosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: FilterTasksProps) {
+export function TaskFilter({ chosenStatus, setChosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: FilterTasksProps) {
   const handleChange = async (event: SelectChangeEvent) => {
     setChosenStatus(event.target.value);
   };

@@ -2,7 +2,6 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Dayjs } from 'dayjs';
 
 import { Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
@@ -10,9 +9,10 @@ import './TaskFormDialog.css';
 
 import type { Task } from '../../../public/props/task.ts';
 import type { DialogComponentProps } from '../../../public/props/DialogComponentProps.ts';
-import { apiActionForDialog } from '../../services/apiActionForDialog.ts';
 
-export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }: DialogComponentProps) {
+import { taskService } from '../../services/taskService.ts';
+
+export function TaskFormDialog({ refreshTasks, id, open, setOpen, taskToEdit }: DialogComponentProps) {
   let addTaskOn = id === 'Add Task' ? true : false;
   const [task, setTask] = useState<Task>(taskToEdit || {
     id: '',
@@ -21,20 +21,27 @@ export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }:
     status: '',
     dueDate: null
   });
-  
+
   const changeTask = async () => {
-    if(taskToEdit)
+    if (taskToEdit)
       await setTask(taskToEdit);
   };
 
   useEffect(() => {
-      changeTask();
-      console.log('DialogComponent -> task : ', task);
-      console.log('DialogComponent -> taskToEdit : ', taskToEdit);
+    changeTask();
+    console.log('DialogComponent -> task : ', task);
+    console.log('DialogComponent -> taskToEdit : ', taskToEdit);
   }, [taskToEdit]);
 
   useEffect(() => {
     console.log('DialogComponent -> task 2 : ', task);
+  }, [task]);
+
+  const isFormValid = useMemo<boolean>((): boolean => {
+    return task.title.length > 0
+      && task.description.length > 0
+      && task.status.length > 0
+      && task.dueDate !== null;
   }, [task]);
 
   const handleCloseModal = () => {
@@ -42,23 +49,13 @@ export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }:
     setTask({ id: '', title: '', description: '', status: '', dueDate: null });
   };
 
-  const handleTaskAction = (event: any) => {
-    setTask({ ...task, [event?.target.name]: event?.target.value });
+  const handleTaskAction = (newValue: any, field: string) => {
+    setTask({ ...task, [field]: newValue });
   };
-
-  const handleTaskAction_Date = (newValue: Dayjs | null) => {
-    setTask({ ...task, dueDate: newValue });
-  };
-
-  const isFormValid = useMemo<boolean>((): boolean => {
-    return task.title.length > 0 
-      && task.description.length > 0 
-      && task.status.length > 0
-      && task.dueDate !== null;
-  }, [task]);
 
   const handleSubmit = async () => {
-    await apiActionForDialog(task);
+    taskService.saveTask(task);
+    //await apiActionForDialog(task);
     handleCloseModal();
     refreshTasks();
   };
@@ -83,7 +80,7 @@ export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }:
               label="Title"
               name='title'
               value={task.title}
-              onChange={handleTaskAction}
+              onChange={(event: any) => handleTaskAction(event.target.value, 'title')}
             />
           </ListItem>
 
@@ -95,7 +92,7 @@ export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }:
               value={task.description}
               multiline
               rows={5}
-              onChange={handleTaskAction}
+              onChange={(event: any) => handleTaskAction(event.target.value, 'description')}
             />
           </ListItem>
 
@@ -113,7 +110,7 @@ export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }:
                   value={task.status}
                   label="Status"
                   name='status'
-                  onChange={handleTaskAction}
+                  onChange={(event: any) => handleTaskAction(event?.target?.value, 'status')}
                 >
                   <MenuItem value='TD'>TD</MenuItem>
                   <MenuItem value='IP'>IP</MenuItem>
@@ -132,7 +129,7 @@ export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }:
               <DemoContainer components={['DatePicker']}>
                 <DatePicker
                   name='dueDate'
-                  onChange={handleTaskAction_Date}
+                  onChange={(event: any) => handleTaskAction(event, 'dueDate')}
                   label='Due Date'
                   value={task.dueDate}
                 />
@@ -143,7 +140,7 @@ export function DialogComponent({ refreshTasks, id, open, setOpen, taskToEdit }:
           <ListItem>
             <Button
               variant='contained'
-              onClick={ handleSubmit }
+              onClick={handleSubmit}
               disabled={!isFormValid}
             >
               Done

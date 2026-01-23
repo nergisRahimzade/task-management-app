@@ -10,29 +10,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { deleteTask } from '../../services/deleteTask.ts';
-import { updateTaskStatus } from '../../services/updateTaskStatus.ts';
 import type { Task } from '../../../public/props/task.ts';
 import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
 import type { TaskActionButtonsProps } from '../../../public/props/TaskActionButtonsProps.ts';
-import { updateChanges } from '../../services/updateChanges.ts';
+
+import { taskService } from '../../services/taskService.ts';
 
 export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
-  const handleDelete = async (deletedTask: Task): Promise<void> => {
-    await deleteTask(deletedTask);
-    refreshTasks();
-  };
-
   const handleEdit = async (task: Task) => {
     await setTaskToEdit(task);
     console.log('TaskComponents -> taskToEdit: ', task);
     await setDialogComponentId('Edit');
     setOpen(true);
-  };
-
-  const handleStatusChange = async (taskItem: Task, newStatus: string) => {
-    await updateTaskStatus(taskItem, newStatus);
-    await refreshTasks();
   };
 
   return (
@@ -46,10 +35,10 @@ export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, se
                 <TextField
                   fullWidth
                   className='title-textfield'
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     console.log(event.target.value);
-                    updateChanges(taskItem, event.target.value, 'title');
-                    refreshTasks();
+                    taskService.updateField(taskItem.id, taskItem, 'title', event.target.value);
+                    await refreshTasks();
                   }}
                   defaultValue={taskItem.title}
                   type='search'
@@ -60,70 +49,73 @@ export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, se
                 <TextField
                   fullWidth
                   className='description-textfield'
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     console.log(event.target.value);
-                    updateChanges(taskItem, event.target.value, 'description');
-                    refreshTasks();
+                    taskService.updateField(taskItem.id, taskItem, 'description', event.target.value);
+                    await refreshTasks();
                   }}
                   defaultValue={taskItem.description}
                 />
               </div>
 
-            <div className='status'>
-              <FormControl required fullWidth sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel
-                  id="demo-simple-select-required-label"
+              <div className='status'>
+                <FormControl required fullWidth sx={{ m: 1, minWidth: 120 }}>
+                  <InputLabel
+                    id="demo-simple-select-required-label"
+                  >
+                    Status
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-required-label"
+                    id="demo-simple-select-required"
+                    value={taskItem.status}
+                    label="Status"
+                    name='status'
+                    onChange={async (event) => {
+                      taskService.updateStatus(taskItem.id, taskItem, event.target.value);
+                      await refreshTasks();
+                    }}
+                  >
+                    <MenuItem value='TD'>TD</MenuItem>
+                    <MenuItem value='IP'>IP</MenuItem>
+                    <MenuItem value='D'>D</MenuItem>
+
+                  </Select>
+
+                </FormControl>
+
+              </div>
+
+              <div className='due-date'>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
                 >
-                  Status
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-required-label"
-                  id="demo-simple-select-required"
-                  value={taskItem.status}
-                  label="Status"
-                  name='status'
-                  onChange={(event) => { handleStatusChange(taskItem, event.target.value) }}
-                >
-                  <MenuItem value='TD'>TD</MenuItem>
-                  <MenuItem value='IP'>IP</MenuItem>
-                  <MenuItem value='D'>D</MenuItem>
+                  <DatePicker
+                    name='dueDate'
+                    defaultValue={taskItem.dueDate}
+                    label='Due Date'
+                    onChange={async (event) => {
+                      taskService.updateField(taskItem.id, taskItem, 'dueDate', event);
+                      await refreshTasks();
+                    }}
+                  />
+                </LocalizationProvider>
+              </div>
 
-                </Select>
-
-              </FormControl>
-
+              <TaskActionButtons handleEdit={handleEdit} taskItem={taskItem} refreshTasks={refreshTasks} />
             </div>
 
-            <div className='due-date'>
-              <LocalizationProvider
-                dateAdapter={AdapterDayjs}
-              >
-                <DatePicker
-                  name='dueDate'
-                  defaultValue={taskItem.dueDate}
-                  label='Due Date'
-                  onChange={(event) => {
-                    updateChanges(taskItem, event, 'dueDate');
-                    refreshTasks();
-                  }}
-                />
-              </LocalizationProvider>
-            </div>
-
-            <TaskActionButtons handleDelete={handleDelete} handleEdit={handleEdit} taskItem={taskItem} />
           </div>
-
-        </div>
 
         </div >
       ))
-}
+      }
 
     </>
   );
 }
 
-export function TaskActionButtons({ handleDelete, handleEdit, taskItem }: TaskActionButtonsProps) {
+export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskActionButtonsProps) {
   return (
     <>
 
@@ -131,7 +123,10 @@ export function TaskActionButtons({ handleDelete, handleEdit, taskItem }: TaskAc
         <IconButton
           aria-label="delete"
           className='task-change-buttons-delete'
-          onClick={() => { handleDelete(taskItem) }}
+          onClick={async () => {
+            taskService.deleteTask(taskItem.id);
+            await refreshTasks();
+          }}
         >
           <DeleteIcon />
         </IconButton>
