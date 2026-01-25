@@ -2,8 +2,9 @@ import { FormControl, IconButton, InputLabel, MenuItem, Select, Stack, type Sele
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import AddIcon from '@mui/icons-material/Add';
-import type { FilterTasksProps } from '../../../public/props/FilterTasksProps.ts';
 import './TaskFilter.css';
+
+import type { TaskFilterProps } from '../../types/index.ts';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',
@@ -16,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export function TaskFilter({ chosenStatus, setChosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: FilterTasksProps) {
+export function TaskFilter({ chosenStatus, setChosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: TaskFilterProps) {
   const handleChange = async (event: SelectChangeEvent) => {
     setChosenStatus(event.target.value);
   };

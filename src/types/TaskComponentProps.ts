@@ -1,6 +1,6 @@
 import type { Task } from './task.ts';
 
-export type TaskComponentsProps = {
+export type TaskComponentProps = {
   taskData: Task[],
   refreshTasks: () => Promise<void>,
   dialogComponentId: string,

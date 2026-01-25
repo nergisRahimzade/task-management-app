@@ -1,6 +1,6 @@
 import type { Task } from "./task"
 
-export type FilterTasksProps = {
+export type TaskFilterProps = {
   chosenStatus: string,
   setChosenStatus: (value: React.SetStateAction<string>) => void,
   setDialogComponentId: (value: React.SetStateAction<string>) => void,

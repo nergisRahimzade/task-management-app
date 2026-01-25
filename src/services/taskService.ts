@@ -1,4 +1,4 @@
-import type { Task } from '../../public/props/task';
+import type { Task } from '../types/task';
 import { api } from './api';
 import dayjs from 'dayjs';
 

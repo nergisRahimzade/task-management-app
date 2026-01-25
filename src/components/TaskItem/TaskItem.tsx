@@ -1,22 +1,17 @@
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import './TaskComponent.css';
-
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import './TaskItem.css';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import type { Task } from '../../../public/props/task.ts';
-import type { TaskComponentsProps } from '../../../public/props/TaskComponentsProps.ts';
-import type { TaskActionButtonsProps } from '../../../public/props/TaskActionButtonsProps.ts';
+import type { Task } from '../../types/task.ts';
 
 import { taskService } from '../../services/taskService.ts';
+import type { TaskItemProps } from '../../types/index.ts';
+import { TaskActionButtons } from './TaskActionButtons.tsx';
 
-export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskComponentsProps) {
+export function TaskItem({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskItemProps) {
   const handleEdit = async (task: Task) => {
     await setTaskToEdit(task);
     console.log('TaskComponents -> taskToEdit: ', task);
@@ -110,35 +105,6 @@ export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, se
         </div >
       ))
       }
-
-    </>
-  );
-}
-
-export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskActionButtonsProps) {
-  return (
-    <>
-
-      <Stack direction="row" spacing={1} className='task-change-buttons-container'>
-        <IconButton
-          aria-label="delete"
-          className='task-change-buttons-delete'
-          onClick={async () => {
-            await taskService.delete(taskItem.id);
-            refreshTasks();
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
-
-        <IconButton
-          aria-label="edit"
-          className='task-change-buttons-delete'
-          onClick={() => { handleEdit(taskItem) }}
-        >
-          <EditIcon />
-        </IconButton>
-      </Stack>
 
     </>
   );

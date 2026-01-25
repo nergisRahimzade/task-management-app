@@ -1,6 +1,6 @@
 import type { Task } from './task.ts';
 
-export type DialogComponentProps = {
+export type TaskDialogProps = {
   refreshTasks: () => Promise<void>,
   id: string,
   open: boolean,

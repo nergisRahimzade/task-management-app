@@ -5,14 +5,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import './TaskFormDialog.css';
 
-import type { Task } from '../../../public/props/task.ts';
-import type { DialogComponentProps } from '../../../public/props/DialogComponentProps.ts';
+import type { Task } from '../../types/task.ts';
 
 import { taskService } from '../../services/taskService.ts';
+import type { TaskDialogProps } from '../../types/index.ts';
 
-export function TaskFormDialog({ refreshTasks, id, open, setOpen, taskToEdit }: DialogComponentProps) {
+export function TaskDialog({ refreshTasks, id, open, setOpen, taskToEdit }: TaskDialogProps) {
   let addTaskOn = id === 'Add Task' ? true : false;
   const [task, setTask] = useState<Task>(taskToEdit || {
     id: '',
