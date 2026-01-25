@@ -51,7 +51,7 @@ export function TaskFilter({ chosenStatus, setChosenStatus, setDialogComponentId
               onChange={handleChange}
               sx={{ minWidth: 120 }}
             >
-              <MenuItem value=''>None</MenuItem>
+              <MenuItem value=''>OP</MenuItem>
               <MenuItem value='TD'>To Do</MenuItem>
               <MenuItem value='IP'>In Progress</MenuItem>
               <MenuItem value='D'>Done</MenuItem>

@@ -22,20 +22,10 @@ export function TaskFormDialog({ refreshTasks, id, open, setOpen, taskToEdit }: 
     dueDate: null
   });
 
-  const changeTask = async () => {
-    if (taskToEdit)
-      await setTask(taskToEdit);
-  };
-
   useEffect(() => {
-    changeTask();
-    console.log('DialogComponent -> task : ', task);
-    console.log('DialogComponent -> taskToEdit : ', taskToEdit);
+    if(taskToEdit)
+      setTask(taskToEdit);
   }, [taskToEdit]);
-
-  useEffect(() => {
-    console.log('DialogComponent -> task 2 : ', task);
-  }, [task]);
 
   const isFormValid = useMemo<boolean>((): boolean => {
     return task.title.length > 0
@@ -54,8 +44,7 @@ export function TaskFormDialog({ refreshTasks, id, open, setOpen, taskToEdit }: 
   };
 
   const handleSubmit = async () => {
-    taskService.saveTask(task);
-    //await apiActionForDialog(task);
+    await taskService.saveTask(task);
     handleCloseModal();
     refreshTasks();
   };

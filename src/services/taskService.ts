@@ -96,7 +96,7 @@ export const taskService = {
     }
   },
 
-  deleteTask : async (id: string) => {
+  delete : async (id: string) => {
     try {
       return await api.delete(`/tasks/${id}`);
     } catch (error) {

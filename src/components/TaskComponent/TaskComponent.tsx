@@ -37,8 +37,8 @@ export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, se
                   className='title-textfield'
                   onChange={async (event) => {
                     console.log(event.target.value);
-                    taskService.updateField(taskItem.id, taskItem, 'title', event.target.value);
-                    await refreshTasks();
+                    await taskService.updateField(taskItem.id, taskItem, 'title', event.target.value);
+                    refreshTasks();
                   }}
                   defaultValue={taskItem.title}
                   type='search'
@@ -51,8 +51,8 @@ export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, se
                   className='description-textfield'
                   onChange={async (event) => {
                     console.log(event.target.value);
-                    taskService.updateField(taskItem.id, taskItem, 'description', event.target.value);
-                    await refreshTasks();
+                    await taskService.updateField(taskItem.id, taskItem, 'description', event.target.value);
+                    refreshTasks();
                   }}
                   defaultValue={taskItem.description}
                 />
@@ -72,8 +72,8 @@ export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, se
                     label="Status"
                     name='status'
                     onChange={async (event) => {
-                      taskService.updateStatus(taskItem.id, taskItem, event.target.value);
-                      await refreshTasks();
+                      await taskService.updateStatus(taskItem.id, taskItem, event.target.value);
+                      refreshTasks();
                     }}
                   >
                     <MenuItem value='TD'>TD</MenuItem>
@@ -95,8 +95,8 @@ export function TaskComponent({ taskData, refreshTasks, setDialogComponentId, se
                     defaultValue={taskItem.dueDate}
                     label='Due Date'
                     onChange={async (event) => {
-                      taskService.updateField(taskItem.id, taskItem, 'dueDate', event);
-                      await refreshTasks();
+                      await taskService.updateField(taskItem.id, taskItem, 'dueDate', event);
+                      refreshTasks();
                     }}
                   />
                 </LocalizationProvider>
@@ -124,8 +124,8 @@ export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskAc
           aria-label="delete"
           className='task-change-buttons-delete'
           onClick={async () => {
-            taskService.deleteTask(taskItem.id);
-            await refreshTasks();
+            await taskService.delete(taskItem.id);
+            refreshTasks();
           }}
         >
           <DeleteIcon />
