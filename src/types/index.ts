@@ -25,7 +25,6 @@ export type TaskActionButtonsProps = {
 export type TaskItemProps = {
   refreshTasks: () => Promise<void>,
   taskData: Task[],
-  dialogComponentId: string,
   setIsEditOn: (value: React.SetStateAction<boolean>) => void,
   setTaskToEdit: (value: React.SetStateAction<Task | null>) => void,
   setOpen: (value: React.SetStateAction<boolean>) => void
@@ -34,7 +33,7 @@ export type TaskItemProps = {
 export type TaskListViewProps = {
   refreshTasks: () => Promise<void>,
   taskData: Task[],
-  setDialogMode: (value: React.SetStateAction<boolean>) => void,
+  setIsEditOn: (value: React.SetStateAction<boolean>) => void,
   setTaskToEdit: (value: React.SetStateAction<Task | null>) => void,
   setOpen: (value: React.SetStateAction<boolean>) => void
 }

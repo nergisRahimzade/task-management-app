@@ -33,7 +33,7 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                     await taskService.updateField(taskItem.id, taskItem, 'title', event.target.value);
                     refreshTasks();
                   }}
-                  defaultValue={taskItem.title}
+                  value={taskItem.title}
                   type='search'
                 />
               </div>
@@ -46,7 +46,7 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                     await taskService.updateField(taskItem.id, taskItem, 'description', event.target.value);
                     refreshTasks();
                   }}
-                  defaultValue={taskItem.description}
+                  value={taskItem.description}
                 />
               </div>
 
@@ -84,7 +84,7 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                 >
                   <DatePicker
                     name='dueDate'
-                    defaultValue={taskItem.dueDate}
+                    value={taskItem.dueDate}
                     label='Due Date'
                     onChange={async (event) => {
                       await taskService.updateField(taskItem.id, taskItem, 'dueDate', event);

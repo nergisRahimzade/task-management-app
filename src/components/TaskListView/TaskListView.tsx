@@ -3,7 +3,7 @@ import { Header } from '../Header/Header.tsx';
 
 import type { TaskListViewProps } from '../../types/index.ts';
 
-export function TaskListView({refreshTasks, taskData, dialogComponentId, setDialogComponentId, setTaskToEdit, setOpen}: TaskListViewProps) {
+export function TaskListView({refreshTasks, taskData, setIsEditOn, setTaskToEdit, setOpen}: TaskListViewProps) {
   return (
     <>
       <Header />
@@ -11,8 +11,7 @@ export function TaskListView({refreshTasks, taskData, dialogComponentId, setDial
       <TaskItem
         refreshTasks={refreshTasks}
         taskData={taskData}
-        dialogComponentId={dialogComponentId}
-        setDialogComponentId={setDialogComponentId}
+        setIsEditOn={setIsEditOn}
         setTaskToEdit={setTaskToEdit}
         setOpen={setOpen}
       />
