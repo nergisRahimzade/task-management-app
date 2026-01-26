@@ -18,7 +18,6 @@ const db = new sqlite3.Database('./tasks.db', (err) => {
   if (err) {
     console.error('Error opening database:', err);
   } else {
-    console.log('Connected to SQLite database');
     // Create tasks table if it doesn't exist
     db.run(`CREATE TABLE IF NOT EXISTS tasks (
       id TEXT PRIMARY KEY,
@@ -185,19 +184,12 @@ app.delete('/api/tasks/:id', (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(`API endpoints available at http://localhost:${PORT}/api/tasks`);
-});
 
 // Handle shutdown gracefully
 process.on('SIGINT', () => {
   db.close((err) => {
     if (err) {
       console.error('Error closing database:', err);
-    } else {
-      console.log('Database connection closed');
     }
     process.exit(0);
   });

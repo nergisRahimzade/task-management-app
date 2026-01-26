@@ -14,7 +14,6 @@ import { TaskActionButtons } from './TaskActionButtons.tsx';
 export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, setOpen }: TaskItemProps) {
   const handleEdit = async (task: Task) => {
     setTaskToEdit(task);
-    console.log('TaskComponents -> taskToEdit: ', task);
     setIsEditOn(true);
     setOpen(true);
   };
@@ -31,7 +30,6 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                   fullWidth
                   className='title-textfield'
                   onChange={async (event) => {
-                    console.log(event.target.value);
                     await taskService.updateField(taskItem.id, taskItem, 'title', event.target.value);
                     refreshTasks();
                   }}
@@ -45,7 +43,6 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                   fullWidth
                   className='description-textfield'
                   onChange={async (event) => {
-                    console.log(event.target.value);
                     await taskService.updateField(taskItem.id, taskItem, 'description', event.target.value);
                     refreshTasks();
                   }}
