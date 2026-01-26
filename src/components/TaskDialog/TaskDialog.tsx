@@ -11,8 +11,7 @@ import type { Task } from '../../types/task.ts';
 import { taskService } from '../../services/taskService.ts';
 import type { TaskDialogProps } from '../../types/index.ts';
 
-export function TaskDialog({ refreshTasks, id, open, setOpen, taskToEdit }: TaskDialogProps) {
-  let addTaskOn = id === 'Add Task' ? true : false;
+export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }: TaskDialogProps) {
   const [task, setTask] = useState<Task>(taskToEdit || {
     id: '',
     title: '',
@@ -84,7 +83,7 @@ export function TaskDialog({ refreshTasks, id, open, setOpen, taskToEdit }: Task
             />
           </ListItem>
 
-          {addTaskOn && (
+          {!isEditOn && (
             <ListItem sx={{ mb: 2 }} className='dialog-item'>
               <FormControl required sx={{ minWidth: 160 }}>
                 <InputLabel

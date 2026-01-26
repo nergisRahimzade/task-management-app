@@ -11,11 +11,11 @@ import { taskService } from '../../services/taskService.ts';
 import type { TaskItemProps } from '../../types/index.ts';
 import { TaskActionButtons } from './TaskActionButtons.tsx';
 
-export function TaskItem({ taskData, refreshTasks, setDialogComponentId, setTaskToEdit, setOpen }: TaskItemProps) {
+export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, setOpen }: TaskItemProps) {
   const handleEdit = async (task: Task) => {
-    await setTaskToEdit(task);
+    setTaskToEdit(task);
     console.log('TaskComponents -> taskToEdit: ', task);
-    await setDialogComponentId('Edit');
+    setIsEditOn(true);
     setOpen(true);
   };
 

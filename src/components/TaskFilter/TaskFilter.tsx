@@ -17,13 +17,13 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export function TaskFilter({ chosenStatus, setChosenStatus, setDialogComponentId, setTaskToEdit, setOpen }: TaskFilterProps) {
+export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTaskToEdit, setOpen }: TaskFilterProps) {
   const handleChange = async (event: SelectChangeEvent) => {
     setChosenStatus(event.target.value);
   };
 
   const handleAddButtonClick = async () => {
-    setDialogComponentId('Add Task');
+    setIsEditOn(false);
     setTaskToEdit(null);
     setOpen(true);
   }

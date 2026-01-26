@@ -12,7 +12,7 @@ import { taskService } from '../services/taskService.ts';
 export function Home() {
   const [allTasks, setAllTasks] = useState<Task[]>([]);
   const [chosenStatus, setChosenStatus] = useState('');
-  const [dialogComponentId, setDialogComponentId] = useState('');
+  const [isEditOn, setIsEditOn] = useState(false);
   const [open, setOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
@@ -44,7 +44,7 @@ export function Home() {
         <TaskFilter
           chosenStatus={chosenStatus}
           setChosenStatus={setChosenStatus}
-          setDialogComponentId={setDialogComponentId}
+          setIsEditOn={setIsEditOn}
           setTaskToEdit={setTaskToEdit}
           setOpen={setOpen}
         />
@@ -53,15 +53,14 @@ export function Home() {
       <TaskListView
         refreshTasks={refreshTasks}
         taskData={taskData}
-        dialogComponentId={dialogComponentId}
-        setDialogComponentId={setDialogComponentId}
+        setDialogMode={setIsEditOn}
         setTaskToEdit={setTaskToEdit}
         setOpen={setOpen}
       />
 
       <TaskDialog
         refreshTasks={refreshTasks}
-        id={dialogComponentId}
+        isEditOn={isEditOn}
         open={open}
         setOpen={setOpen}
         taskToEdit={taskToEdit}
