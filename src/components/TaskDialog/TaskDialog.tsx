@@ -3,7 +3,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField } from '@mui/material';
+import { Alert, Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
 import type { Task } from '../../types/task.ts';
@@ -12,6 +12,7 @@ import { taskService } from '../../services/taskService.ts';
 import type { TaskDialogProps } from '../../types/index.ts';
 
 export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }: TaskDialogProps) {
+  const [hasError, setHasError] = useState(false);
   const [task, setTask] = useState<Task>(taskToEdit || {
     id: '',
     title: '',
@@ -21,7 +22,7 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
   });
 
   useEffect(() => {
-    if(taskToEdit)
+    if (taskToEdit)
       setTask(taskToEdit);
   }, [taskToEdit]);
 
@@ -35,6 +36,7 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
   const handleCloseModal = () => {
     setOpen(false);
     setTask({ id: '', title: '', description: '', status: '', dueDate: null });
+    setHasError(false);
   };
 
   const handleTaskAction = (newValue: any, field: string) => {
@@ -42,9 +44,15 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
   };
 
   const handleSubmit = async () => {
-    await taskService.saveTask(task);
-    handleCloseModal();
-    refreshTasks();
+    try {
+      await taskService.saveTask(task);
+      handleCloseModal();
+      await refreshTasks();
+    } catch (error) {
+      console.error('Failed to call API saveTask(): ', error);
+      setHasError(true);
+      throw error;
+    }
   };
 
   return (
@@ -133,6 +141,10 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
               Done
             </Button>
           </ListItem>
+
+          {hasError && (
+            <Alert severity='error'>There has been an error in calling API. </Alert>
+          )}
 
         </List>
       </Dialog>

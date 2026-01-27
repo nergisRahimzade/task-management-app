@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import './TaskItem.css';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -10,14 +10,22 @@ import type { Task } from '../../types/task.ts';
 import { taskService } from '../../services/taskService.ts';
 import type { TaskItemProps } from '../../types/index.ts';
 import { TaskActionButtons } from './TaskActionButtons.tsx';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
 
 export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, setOpen }: TaskItemProps) {
+  const [hasError, setHasError] = useState(false);
+
   const debounceCall = useMemo(() =>
     debounce(async (id: string, task: Task, field: string, value: any) => {
       if (field === '') {
-        await taskService.updateStatus(id, task, value);
+        try {
+          await taskService.updateStatus(id, task, value);
+        }catch(error) {
+          console.error('Failed to call API updateStatus(): ', error);
+          setHasError(true);
+          throw error;
+        }
       }
       else {
         await taskService.updateField(id, task, field, value);
@@ -27,7 +35,10 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
     [refreshTasks]);
 
   useEffect(() => {
-    return () => debounceCall.cancel();
+    return () => {
+      debounceCall.cancel();
+      setHasError(false);
+    };
   }, [debounceCall]);
 
   const handleEdit = async (task: Task) => {
@@ -124,6 +135,10 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
         </div >
       ))
       }
+
+      {hasError && (
+        <Alert severity='error'>There has been an error in calling API. </Alert>
+      )}
 
     </>
   );
