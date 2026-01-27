@@ -27,7 +27,7 @@ export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskAc
 
       <Stack direction="row" spacing={1} className='task-change-buttons-container'>
         <IconButton
-          aria-label="delete"
+          aria-label="delete task button"
           className='task-change-buttons-delete'
           onClick={handleClick}
         >
@@ -35,7 +35,7 @@ export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskAc
         </IconButton>
 
         <IconButton
-          aria-label="edit"
+          aria-label="edit task button"
           className='task-change-buttons-delete'
           onClick={() => {
             setHasError(false);
