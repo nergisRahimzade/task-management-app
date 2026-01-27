@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import './TaskFilter.css';
 
 import type { TaskFilterProps } from '../../types/index.ts';
+import { useId } from 'react';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',
@@ -18,11 +19,15 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTaskToEdit, setOpen }: TaskFilterProps) {
-  const handleChange = async (event: SelectChangeEvent) => {
+  const selectId = useId();
+  const labelId = useId();
+  const addButtonId = useId();
+
+  const handleChange = (event: SelectChangeEvent) => {
     setChosenStatus(event.target.value);
   };
 
-  const handleAddButtonClick = async () => {
+  const handleAddButtonClick = () => {
     setIsEditOn(false);
     setTaskToEdit(null);
     setOpen(true);
@@ -33,7 +38,13 @@ export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTask
       <div className='button-filter-container'>
         <Item className='add-task-button'>
           <Stack direction="row" spacing={0.5}>
-            <IconButton sx={{ height: 56 }} className='add-task-button' aria-label="add" onClick={handleAddButtonClick}>
+            <IconButton
+              id={addButtonId}
+              sx={{ height: 56 }}
+              className='add-task-button'
+              aria-label="add"
+              onClick={handleAddButtonClick}
+            >
               <AddIcon className='add-task-button-icon' /> <span className='add-task-button-text'>Add Task</span>
             </IconButton>
           </Stack>
@@ -41,18 +52,18 @@ export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTask
 
         <Item className='filter-task-component'>
           <FormControl sx={{ mindWidth: 120 }}>
-            <InputLabel id='demo-simple-select-label'>
+            <InputLabel id={labelId}>
               Filter By
             </InputLabel>
             <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
+              labelId={labelId}
+              id={selectId}
               value={chosenStatus}
               label='Filter By'
               onChange={handleChange}
               sx={{ minWidth: 120 }}
             >
-              <MenuItem value=''>OP</MenuItem>
+              <MenuItem value=''>All</MenuItem>
               <MenuItem value='TD'>To Do</MenuItem>
               <MenuItem value='IP'>In Progress</MenuItem>
               <MenuItem value='D'>Done</MenuItem>

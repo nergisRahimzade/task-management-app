@@ -7,6 +7,7 @@ import { taskService } from '../services/taskService.ts';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import './Home.css'
+import { Header } from '../components/Header/Header.tsx';
 
 export function Home() {
   const [allTasks, setAllTasks] = useState<Task[]>([]);
@@ -45,6 +46,8 @@ export function Home() {
         />
       </div>
 
+      <Header />
+
       <TaskListView
         refreshTasks={refreshTasks}
         taskData={taskData}
@@ -55,7 +58,6 @@ export function Home() {
 
       <TaskDialog
         refreshTasks={refreshTasks}
-        isEditOn={isEditOn}
         open={open}
         setOpen={setOpen}
         taskToEdit={taskToEdit}

@@ -2,7 +2,6 @@ import type { Task } from './task.ts';
 
 export type TaskDialogProps = {
   refreshTasks: () => Promise<void>,
-  isEditOn: boolean,
   open: boolean,
   taskToEdit?: Task | null,
   setOpen: (value: React.SetStateAction<boolean>) => void

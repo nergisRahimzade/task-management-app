@@ -11,6 +11,7 @@ import { TaskActionButtons } from './TaskActionButtons.tsx';
 import { useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
 import './TaskItem.css';
+import type { Dayjs } from 'dayjs';
 
 export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, setOpen }: TaskItemProps) {
   const [hasError, setHasError] = useState(false);
@@ -20,7 +21,7 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
       if (field === '') {
         try {
           await taskService.updateStatus(id, task, value);
-        }catch(error) {
+        } catch (error) {
           console.error('Failed to call API updateStatus(): ', error);
           setHasError(true);
           throw error;
@@ -40,7 +41,7 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
     };
   }, [debounceCall]);
 
-  const handleEdit = async (task: Task) => {
+  const handleEdit = (task: Task) => {
     setTaskToEdit(task);
     setIsEditOn(true);
     setOpen(true);
@@ -50,86 +51,76 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
     <>
       {taskData.map((taskItem) => (
         <div key={taskItem.id} className='tasks-container'>
-
-          <div>
-            <div className='taskItems-container'>
-              <div className='title'>
-                <TextField
-                  fullWidth
-                  className='title-textfield'
-                  onChange={(event) => {
-                    debounceCall(taskItem.id, taskItem, 'title', event.target.value);
-                    //await taskService.updateField(taskItem.id, taskItem, 'title', event.target.value);
-                    //refreshTasks();
-                  }}
-                  value={taskItem.title}
-                  type='search'
-                />
-              </div>
-
-              <div className='description'>
-                <TextField
-                  fullWidth
-                  className='description-textfield'
-                  onChange={(event) => {
-                    debounceCall(taskItem.id, taskItem, 'description', event.target.value);
-                    //await taskService.updateField(taskItem.id, taskItem, 'description', event.target.value);
-                    //refreshTasks();
-                  }}
-                  value={taskItem.description}
-                />
-              </div>
-
-              <div className='status'>
-                <FormControl required fullWidth sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel
-                    id="demo-simple-select-required-label"
-                  >
-                    Status
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-required-label"
-                    id="demo-simple-select-required"
-                    value={taskItem.status}
-                    label="Status"
-                    name='status'
-                    onChange={(event) => {
-                      debounceCall(taskItem.id, taskItem, '', event.target.value);
-                      //await taskService.updateStatus(taskItem.id, taskItem, event.target.value);
-                      //refreshTasks();
-                    }}
-                  >
-                    <MenuItem value='TD'>TD</MenuItem>
-                    <MenuItem value='IP'>IP</MenuItem>
-                    <MenuItem value='D'>D</MenuItem>
-
-                  </Select>
-
-                </FormControl>
-
-              </div>
-
-              <div className='due-date'>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                >
-                  <DatePicker
-                    name='dueDate'
-                    value={taskItem.dueDate}
-                    label='Due Date'
-                    onChange={(event) => {
-                      debounceCall(taskItem.id, taskItem, 'dueDate', event);
-                      //await taskService.updateField(taskItem.id, taskItem, 'dueDate', event);
-                      //refreshTasks();
-                    }}
-                  />
-                </LocalizationProvider>
-              </div>
-
-              <TaskActionButtons handleEdit={handleEdit} taskItem={taskItem} refreshTasks={refreshTasks} />
+          <div className='taskItems-container'>
+            <div className='title'>
+              <TextField
+                fullWidth
+                className='title-textfield'
+                onChange={(event) => {
+                  debounceCall(taskItem.id, taskItem, 'title', event.target.value);
+                }}
+                value={taskItem.title}
+                type='search'
+              />
             </div>
 
+            <div className='description'>
+              <TextField
+                fullWidth
+                className='description-textfield'
+                onChange={(event) => {
+                  debounceCall(taskItem.id, taskItem, 'description', event.target.value);
+
+                }}
+                value={taskItem.description}
+              />
+            </div>
+
+            <div className='status'>
+              <FormControl required fullWidth sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel
+                  id="demo-simple-select-required-label"
+                >
+                  Status
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-required-label"
+                  id="demo-simple-select-required"
+                  value={taskItem.status}
+                  label="Status"
+                  name='status'
+                  onChange={(event) => {
+                    debounceCall(taskItem.id, taskItem, '', event.target.value);
+                  }}
+                >
+                  <MenuItem value='TD'>TD</MenuItem>
+                  <MenuItem value='IP'>IP</MenuItem>
+                  <MenuItem value='D'>D</MenuItem>
+
+                </Select>
+
+              </FormControl>
+
+            </div>
+
+            <div className='due-date'>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+              >
+                <DatePicker
+                  name='dueDate'
+                  value={taskItem.dueDate}
+                  label='Due Date'
+                  onChange={(newValue: Dayjs | null) => {
+                    debounceCall(taskItem.id, taskItem, 'dueDate', newValue);
+                  }}
+                />
+              </LocalizationProvider>
+            </div>
+
+            <TaskActionButtons handleEdit={handleEdit} taskItem={taskItem} refreshTasks={refreshTasks} />
           </div>
+
 
         </div >
       ))

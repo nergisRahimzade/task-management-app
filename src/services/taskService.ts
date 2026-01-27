@@ -105,7 +105,6 @@ export const taskService = {
     }
   },
 
-  //function that will be used inside dialog
   saveTask : async (task: Task) => {
     try {
       if (task.id === '') {

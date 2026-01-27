@@ -2,14 +2,16 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
-import { Alert, Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { Alert, Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField, type SelectChangeEvent } from '@mui/material';
+import { useEffect, useId, useMemo, useState } from 'react';
 
 import { taskService } from '../../services/taskService.ts';
 import type { Task } from '../../types/task.ts';
 import type { TaskDialogProps } from '../../types/index.ts';
+import type dayjs from 'dayjs';
+import type { Dayjs } from 'dayjs';
 
-export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }: TaskDialogProps) {
+export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDialogProps) {
   const [hasError, setHasError] = useState(false);
   const [task, setTask] = useState<Task>(taskToEdit || {
     id: '',
@@ -18,13 +20,19 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
     status: '',
     dueDate: null
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const titleId = useId();
+  const descriptionId = useId();
+  const statusId = useId();
+  const labelId = useId();
 
   useEffect(() => {
     if (taskToEdit)
       setTask(taskToEdit);
   }, [taskToEdit]);
 
-  const isFormValid = useMemo<boolean>((): boolean => {
+  const isFormValid = useMemo(() => {
     return task.title.length > 0
       && task.description.length > 0
       && task.status.length > 0
@@ -37,11 +45,13 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
     setHasError(false);
   };
 
-  const handleTaskAction = (newValue: any, field: string) => {
+  const handleTaskAction = (newValue: string | dayjs.Dayjs | null, field: string) => {
     setTask({ ...task, [field]: newValue });
+    setHasError(false);
   };
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     try {
       await taskService.saveTask(task);
       handleCloseModal();
@@ -50,6 +60,8 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
       console.error('Failed to call API saveTask(): ', error);
       setHasError(true);
       throw error;
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -60,7 +72,7 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
         open={open}
         BackdropProps={{
           sx: {
-            backgroundColor: 'rgba(0, 0, 0, 0.1)', // opacity here
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
           },
         }}
         className='dialog'
@@ -69,51 +81,51 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
         <List sx={{ pt: 1 }}>
           <ListItem sx={{ mb: 2 }} className='dialog-item'>
             <TextField
-              id="outlined-basic"
+              id={titleId}
               label="Title"
               name='title'
               value={task.title}
-              onChange={(event: any) => handleTaskAction(event.target.value, 'title')}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleTaskAction(event.target.value, 'title')}
             />
           </ListItem>
 
           <ListItem sx={{ mb: 2 }} className='dialog-item'>
             <TextField
-              id='outlined-multiline-static'
+              id={descriptionId}
               label='Description'
               name='description'
               value={task.description}
               multiline
               rows={5}
-              onChange={(event: any) => handleTaskAction(event.target.value, 'description')}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleTaskAction(event.target.value, 'description')}
             />
           </ListItem>
 
-          {!isEditOn && (
-            <ListItem sx={{ mb: 2 }} className='dialog-item'>
-              <FormControl required sx={{ minWidth: 160 }}>
-                <InputLabel
-                  id="demo-simple-select-required-label"
-                >
-                  Status
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-required-label"
-                  id="demo-simple-select-required"
-                  value={task.status}
-                  label="Status"
-                  name='status'
-                  onChange={(event: any) => handleTaskAction(event?.target?.value, 'status')}
-                >
-                  <MenuItem value='TD'>TD</MenuItem>
-                  <MenuItem value='IP'>IP</MenuItem>
-                  <MenuItem value='D'>D</MenuItem>
 
-                </Select>
+          <ListItem sx={{ mb: 2 }} className='dialog-item'>
+            <FormControl required sx={{ minWidth: 160 }}>
+              <InputLabel
+                id={labelId}
+              >
+                Status
+              </InputLabel>
+              <Select
+                labelId={labelId}
+                id={statusId}
+                value={task.status}
+                label="Status"
+                name='status'
+                onChange={(event: SelectChangeEvent) => handleTaskAction(event?.target?.value, 'status')}
+              >
+                <MenuItem value='TD'>To Do</MenuItem>
+                <MenuItem value='IP'>In Progress</MenuItem>
+                <MenuItem value='D'>Done</MenuItem>
 
-              </FormControl>
-            </ListItem>
-          )}
+              </Select>
+
+            </FormControl>
+          </ListItem>
+
 
           <ListItem sx={{ mb: 2 }} className='dialog-item'>
             <LocalizationProvider
@@ -122,7 +134,7 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
               <DemoContainer components={['DatePicker']}>
                 <DatePicker
                   name='dueDate'
-                  onChange={(event: any) => handleTaskAction(event, 'dueDate')}
+                  onChange={(value: Dayjs | null) => handleTaskAction(value, 'dueDate')}
                   label='Due Date'
                   value={task.dueDate}
                 />
@@ -134,14 +146,18 @@ export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }
             <Button
               variant='contained'
               onClick={handleSubmit}
-              disabled={!isFormValid}
+              disabled={!isFormValid || isSubmitting}
             >
-              Done
+              {isSubmitting ? 'Saving...' : 'Done'}
             </Button>
           </ListItem>
 
           {hasError && (
             <Alert severity='error'>There has been an error in calling API. </Alert>
+          )}
+
+          {!isFormValid && (
+            <Alert severity='info'>Please fill in all required fields. </Alert>
           )}
 
         </List>
