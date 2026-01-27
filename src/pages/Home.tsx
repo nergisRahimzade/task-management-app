@@ -1,5 +1,5 @@
 import './Home.css'
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 
 import type { Task } from '../types/task.ts';
 
@@ -16,10 +16,10 @@ export function Home() {
   const [open, setOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
-  const refreshTasks = async () => {
+  const refreshTasks = useCallback(async () => {
     const parsedData = await taskService.getAllParsed();
     setAllTasks(parsedData);
-  };
+  }, [setAllTasks]);
 
   useEffect(() => {
     refreshTasks();
@@ -30,10 +30,6 @@ export function Home() {
       return allTasks;
 
     else {
-      //shortcut of 
-      // return allTasks.filter((taskItem) => {
-      //   return taskItem.status === chosenStatus;
-      // });
       return allTasks.filter(task => task.status === chosenStatus);
     }
   }, [allTasks, chosenStatus]);
@@ -53,7 +49,7 @@ export function Home() {
       <TaskListView
         refreshTasks={refreshTasks}
         taskData={taskData}
-        setDialogMode={setIsEditOn}
+        setIsEditOn={setIsEditOn}
         setTaskToEdit={setTaskToEdit}
         setOpen={setOpen}
       />

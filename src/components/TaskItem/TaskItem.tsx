@@ -10,8 +10,26 @@ import type { Task } from '../../types/task.ts';
 import { taskService } from '../../services/taskService.ts';
 import type { TaskItemProps } from '../../types/index.ts';
 import { TaskActionButtons } from './TaskActionButtons.tsx';
+import { useEffect, useMemo } from 'react';
+import { debounce } from 'lodash';
 
 export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, setOpen }: TaskItemProps) {
+  const debounceCall = useMemo(() =>
+    debounce(async (id: string, task: Task, field: string, value: any) => {
+      if (field === '') {
+        await taskService.updateStatus(id, task, value);
+      }
+      else {
+        await taskService.updateField(id, task, field, value);
+      }
+      await refreshTasks();
+    }, 500),
+    [refreshTasks]);
+
+  useEffect(() => {
+    return () => debounceCall.cancel();
+  }, [debounceCall]);
+
   const handleEdit = async (task: Task) => {
     setTaskToEdit(task);
     setIsEditOn(true);
@@ -29,9 +47,10 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                 <TextField
                   fullWidth
                   className='title-textfield'
-                  onChange={async (event) => {
-                    await taskService.updateField(taskItem.id, taskItem, 'title', event.target.value);
-                    refreshTasks();
+                  onChange={(event) => {
+                    debounceCall(taskItem.id, taskItem, 'title', event.target.value);
+                    //await taskService.updateField(taskItem.id, taskItem, 'title', event.target.value);
+                    //refreshTasks();
                   }}
                   value={taskItem.title}
                   type='search'
@@ -42,9 +61,10 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                 <TextField
                   fullWidth
                   className='description-textfield'
-                  onChange={async (event) => {
-                    await taskService.updateField(taskItem.id, taskItem, 'description', event.target.value);
-                    refreshTasks();
+                  onChange={(event) => {
+                    debounceCall(taskItem.id, taskItem, 'description', event.target.value);
+                    //await taskService.updateField(taskItem.id, taskItem, 'description', event.target.value);
+                    //refreshTasks();
                   }}
                   value={taskItem.description}
                 />
@@ -63,9 +83,10 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                     value={taskItem.status}
                     label="Status"
                     name='status'
-                    onChange={async (event) => {
-                      await taskService.updateStatus(taskItem.id, taskItem, event.target.value);
-                      refreshTasks();
+                    onChange={(event) => {
+                      debounceCall(taskItem.id, taskItem, '', event.target.value);
+                      //await taskService.updateStatus(taskItem.id, taskItem, event.target.value);
+                      //refreshTasks();
                     }}
                   >
                     <MenuItem value='TD'>TD</MenuItem>
@@ -86,9 +107,10 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                     name='dueDate'
                     value={taskItem.dueDate}
                     label='Due Date'
-                    onChange={async (event) => {
-                      await taskService.updateField(taskItem.id, taskItem, 'dueDate', event);
-                      refreshTasks();
+                    onChange={(event) => {
+                      debounceCall(taskItem.id, taskItem, 'dueDate', event);
+                      //await taskService.updateField(taskItem.id, taskItem, 'dueDate', event);
+                      //refreshTasks();
                     }}
                   />
                 </LocalizationProvider>
