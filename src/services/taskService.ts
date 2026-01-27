@@ -1,5 +1,5 @@
-import type { Task } from '../types/task';
-import { api } from './api';
+import type { Task } from '../types/task.ts';
+import { api } from './api.ts';
 import dayjs from 'dayjs';
 
 export type TaskStatus = 'TD' | 'IP' | 'D';

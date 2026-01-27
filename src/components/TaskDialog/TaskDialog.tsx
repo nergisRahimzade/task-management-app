@@ -1,14 +1,12 @@
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
 import { Alert, Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
-import type { Task } from '../../types/task.ts';
-
 import { taskService } from '../../services/taskService.ts';
+import type { Task } from '../../types/task.ts';
 import type { TaskDialogProps } from '../../types/index.ts';
 
 export function TaskDialog({ refreshTasks, isEditOn, open, setOpen, taskToEdit }: TaskDialogProps) {

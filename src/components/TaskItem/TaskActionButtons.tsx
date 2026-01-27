@@ -1,11 +1,11 @@
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import { Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { taskService } from '../../services/taskService';
-import type { TaskActionButtonsProps } from '../../types';
+import { taskService } from '../../services/taskService.ts';
+import type { TaskActionButtonsProps } from '../../types/index.ts';
 import { useState } from 'react';
-import { Alert } from '@mui/material';
 
 export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskActionButtonsProps) {
   const [hasError, setHasError] = useState(false);

@@ -1,17 +1,16 @@
 import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import './TaskItem.css';
-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import type { Task } from '../../types/task.ts';
-
-import { taskService } from '../../services/taskService.ts';
 import type { TaskItemProps } from '../../types/index.ts';
+import { taskService } from '../../services/taskService.ts';
+
 import { TaskActionButtons } from './TaskActionButtons.tsx';
 import { useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
+import './TaskItem.css';
 
 export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, setOpen }: TaskItemProps) {
   const [hasError, setHasError] = useState(false);

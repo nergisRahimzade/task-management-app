@@ -1,13 +1,12 @@
-import './Home.css'
-import { useState, useEffect, useMemo, useCallback } from 'react';
-
-import type { Task } from '../types/task.ts';
-
 import { TaskFilter } from '../components/TaskFilter/TaskFilter.tsx';
 import { TaskListView } from '../components/TaskListView/TaskListView.tsx';
 import { TaskDialog } from '../components/TaskDialog/TaskDialog.tsx';
 
+import type { Task } from '../types/task.ts';
 import { taskService } from '../services/taskService.ts';
+
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import './Home.css'
 
 export function Home() {
   const [allTasks, setAllTasks] = useState<Task[]>([]);
