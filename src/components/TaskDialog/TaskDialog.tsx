@@ -10,6 +10,7 @@ import type { Task } from '../../types/task.ts';
 import type { TaskDialogProps } from '../../types/index.ts';
 import type dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
+import { TASK_STATUS, TASK_STATUS_LABELS } from '../../constants/taskStatus.ts';
 
 export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDialogProps) {
   const [hasError, setHasError] = useState(false);
@@ -17,7 +18,7 @@ export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDial
     id: '',
     title: '',
     description: '',
-    status: '',
+    status: TASK_STATUS.NULL,
     dueDate: null
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,25 +34,26 @@ export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDial
   }, [taskToEdit]);
 
   const isFormValid = useMemo(() => {
-    return task.title.length > 0
-      && task.description.length > 0
+    return task.title.trim().length > 0
+      && task.description.trim().length > 0
       && task.status.length > 0
       && task.dueDate !== null;
   }, [task]);
 
   const handleCloseModal = () => {
     setOpen(false);
-    setTask({ id: '', title: '', description: '', status: '', dueDate: null });
+    setTask({ id: '', title: '', description: '', status: TASK_STATUS.NULL, dueDate: null });
     setHasError(false);
   };
 
-  const handleTaskAction = (newValue: string | dayjs.Dayjs | null, field: string) => {
+  const handleTaskAction = (newValue: string | dayjs.Dayjs | null, field: keyof Task) => {
     setTask({ ...task, [field]: newValue });
     setHasError(false);
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setHasError(false);
     try {
       await taskService.saveTask(task);
       handleCloseModal();
@@ -117,9 +119,15 @@ export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDial
                 name='status'
                 onChange={(event: SelectChangeEvent) => handleTaskAction(event?.target?.value, 'status')}
               >
-                <MenuItem value='TD'>To Do</MenuItem>
-                <MenuItem value='IP'>In Progress</MenuItem>
-                <MenuItem value='D'>Done</MenuItem>
+                <MenuItem value={TASK_STATUS.TO_DO}>
+                  {TASK_STATUS_LABELS[TASK_STATUS.TO_DO]}
+                </MenuItem>
+                <MenuItem value={TASK_STATUS.IN_PROGRESS}>
+                  {TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
+                </MenuItem>
+                <MenuItem value={TASK_STATUS.DONE}>
+                  {TASK_STATUS_LABELS[TASK_STATUS.DONE]}
+                </MenuItem>
 
               </Select>
 

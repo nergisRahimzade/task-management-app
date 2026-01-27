@@ -6,6 +6,7 @@ import './TaskFilter.css';
 
 import type { TaskFilterProps } from '../../types/index.ts';
 import { useId } from 'react';
+import { TASK_STATUS, TASK_STATUS_LABELS } from '../../constants/taskStatus.ts';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f0f0f0ff',
@@ -63,10 +64,18 @@ export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTask
               onChange={handleChange}
               sx={{ minWidth: 120 }}
             >
-              <MenuItem value=''>All</MenuItem>
-              <MenuItem value='TD'>To Do</MenuItem>
-              <MenuItem value='IP'>In Progress</MenuItem>
-              <MenuItem value='D'>Done</MenuItem>
+              <MenuItem value={TASK_STATUS.NULL}>
+                {TASK_STATUS_LABELS[TASK_STATUS.NULL]}
+              </MenuItem>
+              <MenuItem value={TASK_STATUS.IN_PROGRESS}>
+                {TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
+              </MenuItem>
+              <MenuItem value={TASK_STATUS.DONE}>
+                {TASK_STATUS_LABELS[TASK_STATUS.DONE]}
+              </MenuItem>
+              <MenuItem value={TASK_STATUS.DONE}>
+                {TASK_STATUS_LABELS[TASK_STATUS.DONE]}
+              </MenuItem>
             </Select>
           </FormControl>
         </Item>

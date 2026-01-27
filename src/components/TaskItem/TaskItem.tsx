@@ -12,6 +12,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
 import './TaskItem.css';
 import type { Dayjs } from 'dayjs';
+import { TASK_STATUS, TASK_STATUS_LABELS } from '../../constants/taskStatus.ts';
 
 export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, setOpen }: TaskItemProps) {
   const [hasError, setHasError] = useState(false);
@@ -93,9 +94,15 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
                     debounceCall(taskItem.id, taskItem, '', event.target.value);
                   }}
                 >
-                  <MenuItem value='TD'>TD</MenuItem>
-                  <MenuItem value='IP'>IP</MenuItem>
-                  <MenuItem value='D'>D</MenuItem>
+                  <MenuItem value={TASK_STATUS.IN_PROGRESS}>
+                    {TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
+                  </MenuItem>
+                  <MenuItem value={TASK_STATUS.DONE}>
+                    {TASK_STATUS_LABELS[TASK_STATUS.DONE]}
+                  </MenuItem>
+                  <MenuItem value={TASK_STATUS.DONE}>
+                    {TASK_STATUS_LABELS[TASK_STATUS.DONE]}
+                  </MenuItem>
 
                 </Select>
 

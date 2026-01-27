@@ -3,16 +3,16 @@ import type { Task } from './task.ts';
 export type TaskDialogProps = {
   refreshTasks: () => Promise<void>,
   open: boolean,
-  taskToEdit?: Task | null,
-  setOpen: (value: React.SetStateAction<boolean>) => void
+  taskToEdit: Task | null,
+  setOpen: (open: boolean) => void,
 }
 
 export type TaskFilterProps = {
   chosenStatus: string,
-  setChosenStatus: (value: React.SetStateAction<string>) => void,
-  setIsEditOn: (value: React.SetStateAction<boolean>) => void,
-  setTaskToEdit: (value: React.SetStateAction<Task | null>) => void,
-  setOpen: (value: React.SetStateAction<boolean>) => void
+  setChosenStatus: (chosenStatus: string) => void,
+  setIsEditOn: (isEditOn: boolean) => void,
+  setTaskToEdit: (taskToEdit: Task | null) => void,
+  setOpen: (open: boolean) => void
 }
 
 export type TaskActionButtonsProps = {
@@ -24,15 +24,15 @@ export type TaskActionButtonsProps = {
 export type TaskItemProps = {
   refreshTasks: () => Promise<void>,
   taskData: Task[],
-  setIsEditOn: (value: React.SetStateAction<boolean>) => void,
-  setTaskToEdit: (value: React.SetStateAction<Task | null>) => void,
-  setOpen: (value: React.SetStateAction<boolean>) => void
+  setIsEditOn: (isEditOn: boolean) => void,
+  setTaskToEdit: (taskToEdit: Task | null) => void,
+  setOpen: (open: boolean) => void
 }
 
 export type TaskListViewProps = {
   refreshTasks: () => Promise<void>,
   taskData: Task[],
-  setIsEditOn: (value: React.SetStateAction<boolean>) => void,
-  setTaskToEdit: (value: React.SetStateAction<Task | null>) => void,
-  setOpen: (value: React.SetStateAction<boolean>) => void
+  setIsEditOn: (isEditOn: boolean) => void,
+  setTaskToEdit: (taskToEdit: Task | null) => void,
+  setOpen: (open: boolean) => void
 }
