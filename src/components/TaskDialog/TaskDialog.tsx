@@ -152,6 +152,7 @@ export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDial
 
           <ListItem>
             <Button
+              aria-label="submit button"
               variant='contained'
               onClick={handleSubmit}
               disabled={!isFormValid || isSubmitting}

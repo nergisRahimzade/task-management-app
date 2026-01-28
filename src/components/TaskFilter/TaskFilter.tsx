@@ -22,7 +22,6 @@ const Item = styled(Paper)(({ theme }) => ({
 export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTaskToEdit, setOpen }: TaskFilterProps) {
   const selectId = useId();
   const labelId = useId();
-  const addButtonId = useId();
 
   const handleChange = (event: SelectChangeEvent) => {
     setChosenStatus(event.target.value);
@@ -40,10 +39,9 @@ export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTask
         <Item className='add-task-button'>
           <Stack direction="row" spacing={0.5}>
             <IconButton
-              id={addButtonId}
+              aria-label="add task button"
               sx={{ height: 56 }}
               className='add-task-button'
-              aria-label="add"
               onClick={handleAddButtonClick}
             >
               <AddIcon className='add-task-button-icon' /> <span className='add-task-button-text'>Add Task</span>
