@@ -12,10 +12,10 @@ import { Header } from '../components/Header/Header.tsx';
 export function Home() {
   const [allTasks, setAllTasks] = useState<Task[]>([]);
   const [chosenStatus, setChosenStatus] = useState('');
-  const [isEditOn, setIsEditOn] = useState(false);
   const [open, setOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
+  //this function fetches the task data to refresh the page after some action (delete / add / edit task).
   const refreshTasks = useCallback(async () => {
     const parsedData = await taskService.getAllParsed();
     setAllTasks(parsedData);
@@ -25,6 +25,7 @@ export function Home() {
     refreshTasks();
   }, []);
 
+  //this variable ensures that we use/get the tasks with the chosen status if the user chooses any status to filter tasks.
   const taskData = useMemo(() => {
     if (chosenStatus === '')
       return allTasks;
@@ -40,7 +41,6 @@ export function Home() {
         <TaskFilter
           chosenStatus={chosenStatus}
           setChosenStatus={setChosenStatus}
-          setIsEditOn={setIsEditOn}
           setTaskToEdit={setTaskToEdit}
           setOpen={setOpen}
         />
@@ -51,7 +51,6 @@ export function Home() {
       <TaskListView
         refreshTasks={refreshTasks}
         taskData={taskData}
-        setIsEditOn={setIsEditOn}
         setTaskToEdit={setTaskToEdit}
         setOpen={setOpen}
       />

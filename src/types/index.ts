@@ -10,21 +10,20 @@ export type TaskDialogProps = {
 export type TaskFilterProps = {
   chosenStatus: string,
   setChosenStatus: (chosenStatus: string) => void,
-  setIsEditOn: (isEditOn: boolean) => void,
   setTaskToEdit: (taskToEdit: Task | null) => void,
   setOpen: (open: boolean) => void
 }
 
 export type TaskActionButtonsProps = {
+  setTaskToEdit: (taskToEdit: Task | null) => void,
+  setOpen: (open: boolean) => void,
   refreshTasks: () => Promise<void>,
-  handleEdit: (updatedTask: Task) => void | Promise<void>,
   taskItem: Task
 }
 
 export type TaskItemProps = {
   refreshTasks: () => Promise<void>,
   taskData: Task[],
-  setIsEditOn: (isEditOn: boolean) => void,
   setTaskToEdit: (taskToEdit: Task | null) => void,
   setOpen: (open: boolean) => void
 }
@@ -32,7 +31,6 @@ export type TaskItemProps = {
 export type TaskListViewProps = {
   refreshTasks: () => Promise<void>,
   taskData: Task[],
-  setIsEditOn: (isEditOn: boolean) => void,
   setTaskToEdit: (taskToEdit: Task | null) => void,
   setOpen: (open: boolean) => void
 }

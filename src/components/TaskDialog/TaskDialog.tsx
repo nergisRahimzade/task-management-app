@@ -3,7 +3,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
 import { Alert, Button, Dialog, DialogTitle, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField, type SelectChangeEvent } from '@mui/material';
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 import { taskService } from '../../services/taskService.ts';
 import type { Task } from '../../types/task.ts';
@@ -14,6 +14,9 @@ import { TASK_STATUS, TASK_STATUS_LABELS } from '../../constants/taskStatus.ts';
 
 export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDialogProps) {
   const [hasError, setHasError] = useState(false);
+
+  //task copies the fields of the taskToEdit if there is an existing task that user wants to edit
+  //or resets every field if user wants to add a new task.
   const [task, setTask] = useState<Task>(taskToEdit || {
     id: '',
     title: '',
@@ -28,11 +31,7 @@ export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDial
   const statusId = useId();
   const labelId = useId();
 
-  useEffect(() => {
-    if (taskToEdit)
-      setTask(taskToEdit);
-  }, [taskToEdit]);
-
+  //form validation to disable or enable DONE button.
   const isFormValid = useMemo(() => {
     return task.title.trim().length > 0
       && task.description.trim().length > 0
@@ -46,11 +45,14 @@ export function TaskDialog({ refreshTasks, open, setOpen, taskToEdit }: TaskDial
     setHasError(false);
   };
 
+  //if any of the fields' value changes, this function makes sure that task is updated too.
   const handleTaskAction = (newValue: string | dayjs.Dayjs | null, field: keyof Task) => {
     setTask({ ...task, [field]: newValue });
     setHasError(false);
   };
 
+  //this function prevents user to click DONE button back to back,
+  //this way the user won't be able to cause any problems regarding duplicate tasks in the backend unintentially.
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setHasError(false);

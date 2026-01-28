@@ -6,11 +6,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import { taskService } from '../../services/taskService.ts';
 import type { TaskActionButtonsProps } from '../../types/index.ts';
 import { useState } from 'react';
+import type { Task } from '../../types/task.ts';
 
-export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskActionButtonsProps) {
+export function TaskActionButtons({ setTaskToEdit, setOpen, taskItem, refreshTasks }: TaskActionButtonsProps) {
   const [hasError, setHasError] = useState(false);
 
-  const handleClick = async () => {
+  const handleDelete = async () => {
     setHasError(false);
     try {
       await taskService.delete(taskItem.id);
@@ -22,6 +23,15 @@ export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskAc
     }
   };
 
+  //this function indicates that "we will editing an existing task" by
+  //since we are editing an existing task, the task to edit will be our current task's values &
+  //we will be opening dialog by setOpen(). 
+  //actual editing to backend is done in TaskDialog.
+  const handleEdit = (task: Task) => {
+    setTaskToEdit(task);
+    setOpen(true);
+  };
+
   return (
     <>
 
@@ -29,7 +39,7 @@ export function TaskActionButtons({ handleEdit, taskItem, refreshTasks }: TaskAc
         <IconButton
           aria-label="delete task button"
           className='task-change-buttons-delete'
-          onClick={handleClick}
+          onClick={handleDelete}
         >
           <DeleteIcon />
         </IconButton>

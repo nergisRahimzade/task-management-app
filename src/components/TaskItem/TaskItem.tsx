@@ -14,7 +14,7 @@ import './TaskItem.css';
 import type { Dayjs } from 'dayjs';
 import { TASK_STATUS, TASK_STATUS_LABELS } from '../../constants/taskStatus.ts';
 
-export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, setOpen }: TaskItemProps) {
+export function TaskItem({ taskData, refreshTasks, setTaskToEdit, setOpen }: TaskItemProps) {
   const [hasError, setHasError] = useState(false);
 
   const titleId = useId();
@@ -22,6 +22,8 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
   const statusId = useId();
   const labelId = useId();
 
+  //this debounce function is added to prevent making a backend call every time user types a character into the task fields.
+  //the function is set that if the user doesn't type for 500 miliseconds, then make the API call.
   const debounceCall = useMemo(() =>
     debounce(async (id: string, task: Task, field: string, value: any) => {
       if (field === '') {
@@ -34,24 +36,25 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
         }
       }
       else {
-        await taskService.updateField(id, task, field, value);
+        try {
+          await taskService.updateField(id, task, field, value);
+        } catch (error) {
+          console.error('Failed to call API updateField(): ', error);
+          setHasError(true);
+          throw error;
+        }
       }
       await refreshTasks();
     }, 500),
     [refreshTasks]);
 
+  //this cleanup function was necessary to prevent bugs, memory leaks and ghost executions.
   useEffect(() => {
     return () => {
       debounceCall.cancel();
       setHasError(false);
     };
   }, [debounceCall]);
-
-  const handleEdit = (task: Task) => {
-    setTaskToEdit(task);
-    setIsEditOn(true);
-    setOpen(true);
-  };
 
   return (
     <>
@@ -132,7 +135,12 @@ export function TaskItem({ taskData, refreshTasks, setIsEditOn, setTaskToEdit, s
               </LocalizationProvider>
             </div>
 
-            <TaskActionButtons handleEdit={handleEdit} taskItem={taskItem} refreshTasks={refreshTasks} />
+            <TaskActionButtons
+              setTaskToEdit={setTaskToEdit}
+              setOpen={setOpen}
+              taskItem={taskItem}
+              refreshTasks={refreshTasks}
+            />
           </div>
 
 

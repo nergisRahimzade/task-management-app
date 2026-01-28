@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTaskToEdit, setOpen }: TaskFilterProps) {
+export function TaskFilter({ chosenStatus, setChosenStatus, setTaskToEdit, setOpen }: TaskFilterProps) {
   const selectId = useId();
   const labelId = useId();
 
@@ -27,8 +27,11 @@ export function TaskFilter({ chosenStatus, setChosenStatus, setIsEditOn, setTask
     setChosenStatus(event.target.value);
   };
 
+  //this function indicates that "we will be adding a new task" by 
+  //since we are adding a new task, the task to edit will be null &
+  //we will be opening dialog by setOpen().
+  //actual adding to backend is done in TaskDialog.
   const handleAddButtonClick = () => {
-    setIsEditOn(false);
     setTaskToEdit(null);
     setOpen(true);
   }
