@@ -184,6 +184,12 @@ app.delete('/api/tasks/:id', (req, res) => {
   });
 });
 
+//----
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+//----
 
 // Handle shutdown gracefully
 process.on('SIGINT', () => {

@@ -55,12 +55,12 @@ export function Home() {
         setOpen={setOpen}
       />
 
-      <TaskDialog
+      {open && (<TaskDialog
         refreshTasks={refreshTasks}
         open={open}
         setOpen={setOpen}
         taskToEdit={taskToEdit}
-      />
+      />)}
 
     </div>
   )

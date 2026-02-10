@@ -58,7 +58,7 @@ export function TaskItem({ taskData, refreshTasks, setTaskToEdit, setOpen }: Tas
 
   return (
     <>
-      {taskData.map((taskItem) => (
+      {taskData?.map((taskItem) => (
         <div key={taskItem.id} className='tasks-container'>
           <div className='taskItems-container'>
             <div className='title'>
@@ -105,10 +105,10 @@ export function TaskItem({ taskData, refreshTasks, setTaskToEdit, setOpen }: Tas
                   }}
                 >
                   <MenuItem value={TASK_STATUS.IN_PROGRESS}>
-                    {TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
+                    {TASK_STATUS_LABELS[TASK_STATUS.TO_DO]}
                   </MenuItem>
                   <MenuItem value={TASK_STATUS.DONE}>
-                    {TASK_STATUS_LABELS[TASK_STATUS.DONE]}
+                    {TASK_STATUS_LABELS[TASK_STATUS.IN_PROGRESS]}
                   </MenuItem>
                   <MenuItem value={TASK_STATUS.DONE}>
                     {TASK_STATUS_LABELS[TASK_STATUS.DONE]}
